@@ -1,0 +1,374 @@
+﻿@page "/"
+@inject IJSRuntime JSRuntime
+@using Microsoft.AspNetCore.Components.Web
+
+<PageTitle>Home - E-Commerce Store</PageTitle>
+
+<!-- Note: Add these to your _Host.cshtml or _Layout.cshtml head for global styles -->
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" /> -->
+
+<!-- Hero Section / Banner -->
+<section class="hero-section position-relative overflow-hidden">
+    <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="hero-bg d-flex align-items-center justify-content-center text-white position-relative">
+                    <div class="container text-center px-4">
+                        <h1 class="display-3 fw-bold mb-3 animate__animated animate__fadeInDown">Upgrade Your Home Today</h1>
+                        <p class="lead fs-4 mb-4 animate__animated animate__fadeInUp animate__delay-1s">Best deals on furniture and electronics</p>
+                        <a href="/shop" class="btn btn-primary btn-lg px-5 py-3 animate__animated animate__zoomIn animate__delay-2s">Shop Now</a>
+                    </div>
+                    <div class="hero-overlay"></div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="hero-bg d-flex align-items-center justify-content-center text-white position-relative">
+                    <div class="container text-center px-4">
+                        <h1 class="display-3 fw-bold mb-3 animate__animated animate__fadeInDown">Summer Fashion Sale</h1>
+                        <p class="lead fs-4 mb-4 animate__animated animate__fadeInUp animate__delay-1s">Up to 70% off on trendy apparel</p>
+                        <a href="/fashion" class="btn btn-primary btn-lg px-5 py-3 animate__animated animate__zoomIn animate__delay-2s">View Collection</a>
+                    </div>
+                    <div class="hero-overlay"></div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="hero-bg d-flex align-items-center justify-content-center text-white position-relative">
+                    <div class="container text-center px-4">
+                        <h1 class="display-3 fw-bold mb-3 animate__animated animate__fadeInDown">Latest Electronics</h1>
+                        <p class="lead fs-4 mb-4 animate__animated animate__fadeInUp animate__delay-1s">Gadgets at unbeatable prices</p>
+                        <a href="/electronics" class="btn btn-primary btn-lg px-5 py-3 animate__animated animate__zoomIn animate__delay-2s">Shop Now</a>
+                    </div>
+                    <div class="hero-overlay"></div>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</section>
+
+<!-- Featured Categories -->
+<section class="py-5 bg-gradient" data-wow-offset="100">
+    <div class="container">
+        <h2 class="text-center mb-5 wow animate__animated animate__fadeInUp">Featured Categories</h2>
+        <div class="row g-4">
+            <div class="col-md-3">
+                @* <img src="~/newfolder/basketball-players-big-professional-arena-game.jpg" /> *@
+                <div class="card h-100 border-0 shadow-lg overflow-hidden category-card wow animate__animated animate__fadeInLeft" data-wow-delay="0.2s">
+                    <img src="~/newfolder/basketball-players-big-professional-arena-game.jpg" class="card-img-top" alt="Electronics">
+                    <div class="card-body d-flex flex-column align-items-center justify-content-center text-center p-4">
+                        <i class="fas fa-laptop fa-3x text-primary mb-3"></i>
+                        <h5 class="card-title fw-bold">Electronics</h5>
+                        <a href="/electronics" class="btn btn-outline-primary mt-auto">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 border-0 shadow-lg overflow-hidden category-card wow animate__animated animate__fadeInUp" data-wow-delay="0.4s">
+                    <img src="https://via.placeholder.com/300x200/dc3545/ffffff?text=Fashion" class="card-img-top" alt="Fashion">
+                    <div class="card-body d-flex flex-column align-items-center justify-content-center text-center p-4">
+                        <i class="fas fa-tshirt fa-3x text-danger mb-3"></i>
+                        <h5 class="card-title fw-bold">Fashion</h5>
+                        <a href="/fashion" class="btn btn-outline-primary mt-auto">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 border-0 shadow-lg overflow-hidden category-card wow animate__animated animate__fadeInRight" data-wow-delay="0.6s">
+                    <img src="https://via.placeholder.com/300x200/28a745/ffffff?text=Home+%26+Kitchen" class="card-img-top" alt="Home & Kitchen">
+                    <div class="card-body d-flex flex-column align-items-center justify-content-center text-center p-4">
+                        <i class="fas fa-home fa-3x text-success mb-3"></i>
+                        <h5 class="card-title fw-bold">Home & Kitchen</h5>
+                        <a href="/home-kitchen" class="btn btn-outline-primary mt-auto">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 border-0 shadow-lg overflow-hidden category-card wow animate__animated animate__fadeInLeft" data-wow-delay="0.8s">
+                    <img src="https://via.placeholder.com/300x200/fd7e14/ffffff?text=Sports" class="card-img-top" alt="Sports">
+                    <div class="card-body d-flex flex-column align-items-center justify-content-center text-center p-4">
+                        <i class="fas fa-running fa-3x text-warning mb-3"></i>
+                        <h5 class="card-title fw-bold">Sports</h5>
+                        <a href="/sports" class="btn btn-outline-primary mt-auto">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured / Popular Products -->
+<section class="py-5" data-wow-offset="100">
+    <div class="container">
+        <h2 class="text-center mb-5 wow animate__animated animate__bounceIn">Popular Products</h2>
+        <div class="row g-4">
+            <ProductCard Image="http://www.freepik.com/free-photo/robot-with-laptop-computer-mouse_958157.htm#from_element=cross_selling__photo" Name="Smart TV 55-inch" Price="$499.99" Rating="4.5" Discount="20%" Delay="0.1s" />
+            <ProductCard Image="https://via.placeholder.com/300x300/dc3545/ffffff?text=Wireless+Headphones" Name="Wireless Headphones" Price="$99.99" Rating="4.8" Discount="15%" Delay="0.2s" />
+            <ProductCard Image="https://via.placeholder.com/300x300/28a745/ffffff?text=Designer+Bag" Name="Designer Handbag" Price="$199.99" Rating="4.2" Discount="30%" Delay="0.3s" />
+            <ProductCard Image="https://via.placeholder.com/300x300/fd7e14/ffffff?text=Office+Chair" Name="Ergonomic Office Chair" Price="$149.99" Rating="4.6" Discount="10%" Delay="0.4s" />
+            <ProductCard Image="https://via.placeholder.com/300x300/6f42c1/ffffff?text=Running+Shoes" Name="Running Shoes" Price="$79.99" Rating="4.7" Discount="25%" Delay="0.5s" />
+            <ProductCard Image="https://via.placeholder.com/300x300/20c997/ffffff?text=Blender" Name="High-Speed Blender" Price="$59.99" Rating="4.3" Discount="5%" Delay="0.6s" />
+        </div>
+    </div>
+</section>
+
+<!-- Promotions / Offers Section -->
+<section class="py-5 bg-gradient-warning text-dark position-relative overflow-hidden" data-wow-offset="100">
+    <div class="container text-center">
+        <h2 class="mb-3 wow animate__animated animate__tada">Limited Time Offers</h2>
+        <p class="lead mb-4 wow animate__animated animate__fadeIn" data-wow-delay="0.3s">50% off on selected items! Don't miss out.</p>
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-5">
+                <div class="card border-0 bg-transparent overflow-hidden wow animate__animated animate__flipInX" data-wow-delay="0.5s">
+                    <img src="https://via.placeholder.com/400x250/fd7e14/ffffff?text=Deal+of+the+Day" class="card-img-top" alt="Deal of the Day">
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold">Deal of the Day</h5>
+                        <a href="/deals" class="btn btn-warning btn-lg">Grab Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="card border-0 bg-transparent overflow-hidden wow animate__animated animate__flipInX" data-wow-delay="0.7s">
+                    <img src="https://via.placeholder.com/400x250/007bff/ffffff?text=Seasonal+Sale" class="card-img-top" alt="Seasonal Sale">
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold">Seasonal Sale</h5>
+                        <a href="/seasonal" class="btn btn-warning btn-lg">View All</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- New Arrivals / Latest Products -->
+<section class="py-5 bg-gradient-light" data-wow-offset="100">
+    <div class="container">
+        <h2 class="text-center mb-5 wow animate__animated animate__slideInDown">New Arrivals</h2>
+        <div class="row g-4">
+            <ProductCard Image="https://via.placeholder.com/300x300/6f42c1/ffffff?text=New+Laptop" Name="Latest Laptop" Price="$899.99" Rating="4.9" Discount="0%" Delay="0.1s" />
+            <ProductCard Image="https://via.placeholder.com/300x300/20c997/ffffff?text=Smart+Watch" Name="Smart Watch Pro" Price="$299.99" Rating="4.4" Discount="10%" Delay="0.2s" />
+            <ProductCard Image="https://via.placeholder.com/300x300/dc3545/ffffff?text=Summer+Dress" Name="Summer Dress" Price="$49.99" Rating="4.1" Discount="0%" Delay="0.3s" />
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials / Reviews -->
+<section class="py-5 position-relative" data-wow-offset="100">
+    <div class="container">
+        <h2 class="text-center mb-5 wow animate__animated animate__pulse">What Our Customers Say</h2>
+        <div id="testimonialCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8 text-center wow animate__animated animate__zoomIn">
+                            <blockquote class="blockquote p-4 border-start border-5 border-primary">
+                                <p class="fs-4">"Great product, fast delivery!"</p>
+                                <footer class="blockquote-footer mt-3">John Doe</footer>
+                            </blockquote>
+                            <div class="text-warning mb-3">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="row justify-content-center">
+                        <div class="col-md-8 text-center wow animate__animated animate__zoomIn">
+                            <blockquote class="blockquote p-4 border-start border-5 border-success">
+                                <p class="fs-4">"Amazing quality and value for money."</p>
+                                <footer class="blockquote-footer mt-3">Jane Smith</footer>
+                            </blockquote>
+                            <div class="text-warning mb-3">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Blog / Guides (Optional) -->
+<section class="py-5 bg-gradient" data-wow-offset="100">
+    <div class="container">
+        <h2 class="text-center mb-5 wow animate__animated animate__fadeIn">Latest Blog Posts</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-lg overflow-hidden wow animate__animated animate__fadeInLeft" data-wow-delay="0.2s">
+                    <img src="https://via.placeholder.com/400x250/007bff/ffffff?text=Home+Decor+Tips" class="card-img-top" alt="Blog 1">
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold">Top Home Decor Tips</h5>
+                        <p class="card-text">Discover ways to refresh your living space.</p>
+                        <a href="/blog/decor-tips" class="btn btn-outline-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-lg overflow-hidden wow animate__animated animate__fadeInUp" data-wow-delay="0.4s">
+                    <img src="https://via.placeholder.com/400x250/dc3545/ffffff?text=Fashion+Trends" class="card-img-top" alt="Blog 2">
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold">2025 Fashion Trends</h5>
+                        <p class="card-text">Stay ahead with the latest styles.</p>
+                        <a href="/blog/fashion-trends" class="btn btn-outline-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-lg overflow-hidden wow animate__animated animate__fadeInRight" data-wow-delay="0.6s">
+                    <img src="https://via.placeholder.com/400x250/28a745/ffffff?text=Gadget+Reviews" class="card-img-top" alt="Blog 3">
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold">Best Gadgets of the Year</h5>
+                        <p class="card-text">In-depth reviews and recommendations.</p>
+                        <a href="/blog/gadgets" class="btn btn-outline-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter Signup -->
+<section class="py-5 bg-dark text-white position-relative" data-wow-offset="100">
+    <div class="container text-center">
+        <h2 class="mb-4 wow animate__animated animate__lightSpeedIn">Stay Updated with Our Newsletter</h2>
+        <p class="lead mb-4 wow animate__animated animate__fadeIn" data-wow-delay="0.3s">Subscribe for exclusive deals and news.</p>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="input-group input-group-lg wow animate__animated animate__bounceInUp" data-wow-delay="0.5s">
+                    <input type="email" class="form-control rounded-pill px-4" placeholder="Enter your email">
+                    <button class="btn btn-primary rounded-pill px-4" type="button">Subscribe</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Brands / Partners -->
+<section class="py-4 bg-gradient-light" data-wow-offset="100">
+    <div class="container">
+        <h5 class="text-center mb-4 wow animate__animated animate__fadeIn">Our Trusted Brands</h5>
+        <div id="brandsCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active justify-content-center d-flex">
+                    <div class="col-auto me-4"><img src="https://via.placeholder.com/150x50/007bff/ffffff?text=Brand1" alt="Brand 1" class="img-fluid shadow-sm wow animate__animated animate__bounce" data-wow-delay="0.1s"></div>
+                    <div class="col-auto me-4"><img src="https://via.placeholder.com/150x50/dc3545/ffffff?text=Brand2" alt="Brand 2" class="img-fluid shadow-sm wow animate__animated animate__bounce" data-wow-delay="0.3s"></div>
+                    <div class="col-auto"><img src="https://via.placeholder.com/150x50/28a745/ffffff?text=Brand3" alt="Brand 3" class="img-fluid shadow-sm wow animate__animated animate__bounce" data-wow-delay="0.5s"></div>
+                </div>
+                <div class="carousel-item justify-content-center d-flex">
+                    <div class="col-auto me-4"><img src="https://via.placeholder.com/150x50/fd7e14/ffffff?text=Brand4" alt="Brand 4" class="img-fluid shadow-sm wow animate__animated animate__bounce" data-wow-delay="0.1s"></div>
+                    <div class="col-auto me-4"><img src="https://via.placeholder.com/150x50/6f42c1/ffffff?text=Brand5" alt="Brand 5" class="img-fluid shadow-sm wow animate__animated animate__bounce" data-wow-delay="0.3s"></div>
+                    <div class="col-auto"><img src="https://via.placeholder.com/150x50/20c997/ffffff?text=Brand6" alt="Brand 6" class="img-fluid shadow-sm wow animate__animated animate__bounce" data-wow-delay="0.5s"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-dark text-white py-5 mt-5" data-wow-offset="100">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-4 wow animate__animated animate__fadeInLeft">
+                <h5 class="fw-bold">About Us</h5>
+                <p>Your one-stop shop for quality products at great prices. Fast shipping and excellent customer service.</p>
+            </div>
+            <div class="col-md-2 mb-4 wow animate__animated animate__fadeInUp" data-wow-delay="0.2s">
+                <h5 class="fw-bold">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="/products" class="text-white-50">Products</a></li>
+                    <li><a href="/categories" class="text-white-50">Categories</a></li>
+                    <li><a href="/policies" class="text-white-50">Policies</a></li>
+                    <li><a href="/faq" class="text-white-50">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3 mb-4 wow animate__animated animate__fadeInUp" data-wow-delay="0.4s">
+                <h5 class="fw-bold">Contact</h5>
+                <p>Email: info@ecommerce.com<br>Phone: +1 234 567 8900</p>
+            </div>
+            <div class="col-md-3 mb-4 wow animate__animated animate__fadeInRight" data-wow-delay="0.6s">
+                <h5 class="fw-bold">Follow Us</h5>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="#" class="text-white-50"><i class="fab fa-facebook fa-2x"></i></a>
+                    <a href="#" class="text-white-50"><i class="fab fa-twitter fa-2x"></i></a>
+                    <a href="#" class="text-white-50"><i class="fab fa-instagram fa-2x"></i></a>
+                    <a href="#" class="text-white-50"><i class="fab fa-linkedin fa-2x"></i></a>
+                </div>
+            </div>
+        </div>
+        <hr class="my-4 opacity-25">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <p class="mb-0">&copy; 2025 E-Commerce Store. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <a href="/terms" class="text-white-50 me-3">Terms</a>
+                <a href="/privacy" class="text-white-50">Privacy</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+@code {
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Initialize Bootstrap Carousels
+            await JSRuntime.InvokeVoidAsync("eval", "new bootstrap.Carousel(document.getElementById('heroCarousel'), { interval: 5000, ride: 'carousel' });");
+            await JSRuntime.InvokeVoidAsync("eval", "new bootstrap.Carousel(document.getElementById('testimonialCarousel'), { interval: 4000, ride: 'carousel' });");
+            await JSRuntime.InvokeVoidAsync("eval", "new bootstrap.Carousel(document.getElementById('brandsCarousel'), { interval: 3000, ride: 'carousel' });");
+
+            // Initialize WOW.js (add script to _Host.cshtml: <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>)
+            await JSRuntime.InvokeVoidAsync("eval", @"
+                if (typeof WOW !== 'undefined') {
+                    new WOW({
+                        boxClass: 'wow',
+                        animateClass: 'animate__animated',
+                        offset: 0,
+                        mobile: true,
+                        live: true
+                    }).init();
+                }
+            ");
+        }
+    }
+}
+
+<style>
+    .hero-bg {
+        background-size: cover;
+        background-position: center;
+        height: 100vh;
+        min-height: 600px;
+    }
+    .hero-bg:nth-child(1) { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://via.placeholder.com/1920x1080/007bff/ffffff?text=Home+Upgrade'); }
+    .hero-bg:nth-child(2) { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://via.placeholder.com/1920x1080/dc3545/ffffff?text=Fashion+Sale'); }
+    .hero-bg:nth-child(3) { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://via.placeholder.com/1920x1080/28a745/ffffff?text=Electronics'); }
+    .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); }
+    .bg-gradient { background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); }
+    .bg-gradient-light { background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%); }
+    .bg-gradient-warning { background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%); }
+    .category-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .category-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.1) !important; }
+    .card:hover .btn { transform: scale(1.05); }
+</style>

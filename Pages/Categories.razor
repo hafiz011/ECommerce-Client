@@ -1,0 +1,84 @@
+﻿@page "/Categories"
+@using Ecommerce.Client.Models
+@inject Ecommerce.Client.Services.CategoryService CategoryService
+@inject IJSRuntime js
+@inject NavigationManager Navigation
+
+<PageTitle>Categories</PageTitle>
+
+<a href="/AddCategory" class="btn btn-primary mb-3">Add New Category</a>
+
+@if (categories == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cat in categories)
+            {
+                <tr>
+                    <td>
+                        @if (!string.IsNullOrEmpty(cat.ImgUrlPath))
+                        {
+                            <img src="@cat.ImgUrlPath" width="50" height="50" class="border rounded" alt="@cat.Name" />
+                        }
+                        else
+                        {
+                            <span>No Image</span>
+                        }
+                    </td>
+                    <td>@cat.Name</td>
+                    <td>@(cat.Description?.Length > 50 ? cat.Description.Substring(0, 50) + "..." : cat.Description)</td>
+                    @* <td>@cat.CreatedAt.ToString("yyyy-MM-dd")</td> *@
+                    <td>
+                        <button class="btn btn-sm btn-warning me-1" @onclick="() => EditCategory(cat.Id!)">Edit</button>
+                        <button class="btn btn-sm btn-danger" @onclick="() => DeleteCategory(cat.Id!)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<CategoryDto>? categories;
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = await CategoryService.AllCategory();
+    }
+
+    private void EditCategory(string id)
+    {
+        Navigation.NavigateTo($"/EditCategory/{id}");
+    }
+
+    private async Task DeleteCategory(string id)
+    {
+        var confirmed = await js.InvokeAsync<bool>("confirm", $"Are you sure you want to delete category '{id}'?");
+        if (!confirmed)
+            return;
+
+        var success = await CategoryService.DeleteCategory(id);
+        if (success)
+        {
+            await js.InvokeVoidAsync("alert", "Category deleted successfully!");
+            categories = await CategoryService.AllCategory();
+        }
+        else
+        {
+            await js.InvokeVoidAsync("alert", "Failed to delete category!");
+        }
+    }
+}
