@@ -1031,6 +1031,7 @@ D:\GitHub\Ecommerce.Client\bin\Debug\net8.0\wwwroot\_framework\Microsoft.AspNetC
 D:\GitHub\Ecommerce.Client\bin\Debug\net8.0\Microsoft.AspNetCore.Http.Features.dll
 D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\webcil\Microsoft.AspNetCore.Http.Features.wasm
 D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\tefb7hwhvp-uu585bsp33.gz
-D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\27p8mes09i-imcefnpw23.gz
-D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\5di70i66r7-67j4r7lbev.gz
-D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\613ailm9v9-9zpg6thpl4.gz
+D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\Ecommerce.Client.sourcelink.json
+D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\27p8mes09i-uv30mcy6k3.gz
+D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\5di70i66r7-mdzwdsujwc.gz
+D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\613ailm9v9-72kgz27fhu.gz

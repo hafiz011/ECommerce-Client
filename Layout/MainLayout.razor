@@ -1,3 +1,17 @@
 ﻿@inherits LayoutComponentBase
 
-@Body
+<div class="d-flex flex-column min-vh-100">
+    <Header OnMenuToggle="ToggleMenu" />
+    <main class="flex-grow-1 body-container py-4">
+        <div class="container">
+            @Body
+        </div>
+    </main>
+    <Footer />
+    <MobileMenu IsOpen="@isMenuOpen" OnClose="ToggleMenu" />
+</div>
+
+@code {
+    private bool isMenuOpen;
+    private void ToggleMenu() => isMenuOpen = !isMenuOpen;
+}

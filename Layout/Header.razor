@@ -1,0 +1,71 @@
+﻿@using Ecommerce.Client.Services
+@inject NavigationManager Navigation
+@inject CartService CartService
+
+<header class="header bg-white shadow-sm sticky-top z-3">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <div class="d-flex align-items-center">
+                <button class="btn d-lg-none me-2" @onclick="OnMenuToggleClicked">
+                    <i class="bi bi-list fs-3"></i>
+                </button>
+
+                <a class="navbar-brand fw-bold fs-4 text-primary d-flex align-items-center" href="/">
+                    <i class="bi bi-shop-window me-2"></i>ShopBD
+                </a>
+            </div>
+
+            <div class="search-bar mx-auto d-none d-lg-flex flex-grow-1" style="max-width: 600px;">
+                <div class="input-group">
+                    <input type="search" class="form-control rounded-pill ps-4" placeholder="Search products, categories..." @bind="searchQuery" @bind:event="oninput" />
+                    <button class="btn btn-outline-primary rounded-pill ms-n2" @onclick="PerformSearch">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item me-3">
+                        <a class="nav-link position-relative" href="/cart">
+                            <i class="bi bi-cart-fill fs-5"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                @cartCount
+                                <span class="visually-hidden">items</span>
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown me-2">
+                        <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-circle fs-5"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/account">My Account</a></li>
+                            <li><a class="dropdown-item" href="/orders">Orders</a></li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li><a class="dropdown-item" href="/login">Login</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- mobile search (shows under nav when toggled by bootstrap collapse if you implement) -->
+    </nav>
+</header>
+
+@code {
+    [Parameter] public EventCallback OnMenuToggle { get; set; }
+    private string searchQuery = "";
+    private int cartCount => CartService.Count();
+
+    private void OnMenuToggleClicked() => OnMenuToggle.InvokeAsync();
+
+    private void PerformSearch()
+    {
+        if (!string.IsNullOrWhiteSpace(searchQuery))
+        {
+            Navigation.NavigateTo($"/search?q={Uri.EscapeDataString(searchQuery)}");
+        }
+    }
+}

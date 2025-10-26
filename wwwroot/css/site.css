@@ -1,0 +1,103 @@
+﻿:root {
+    --primary: #ff7a00; /* daraz/orange style */
+    --primary-dark: #dc6b00;
+}
+
+body {
+    background: #f5f7fb;
+}
+
+/* header */
+.header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.search-bar input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.15rem rgba(255, 122, 0, 0.12);
+}
+
+/* hero */
+.hero-banner {
+    background: linear-gradient(135deg, #ff8a00 0%, #ff5a00 100%);
+    color: white;
+    overflow: hidden;
+}
+
+/* product card */
+.product-card .product-main {
+    display: block;
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    transition: opacity .2s ease;
+}
+
+.product-card .product-hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity .2s ease;
+}
+
+.product-card:hover .product-main {
+    opacity: 0;
+}
+
+.product-card:hover .product-hover {
+    opacity: 1;
+}
+
+.product-card .card-img-top {
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.product-card .badge-position {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.product-card .quick-add {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    border-radius: 50%;
+}
+
+/* offcanvas */
+.offcanvas {
+    transform: translateX(-100%);
+    transition: transform 0.25s ease-in-out;
+}
+
+    .offcanvas.show {
+        transform: translateX(0);
+    }
+
+.offcanvas-backdrop {
+    background: rgba(0,0,0,0.4);
+}
+
+/* footer */
+.footer {
+    background: linear-gradient(180deg, #212529 0%, #1a1a1a 100%);
+}
+
+/* responsive tweaks */
+@media (max-width: 767.98px) {
+    .hero-banner .col-lg-5 {
+        display: none;
+    }
+
+    .product-card .product-main, .product-card .product-hover {
+        height: 160px;
+    }
+}

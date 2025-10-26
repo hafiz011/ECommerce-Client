@@ -6,12 +6,12 @@ namespace Ecommerce.Client.Models
 {
     public class CategoryDto
     {
-        public string? Id { get; set; }
-        [Required(ErrorMessage = "Category name is required.")]
-        public string? Name { get; set; }
-        public string? ImgUrlPath { get; set; }  // image URL from API
-        [Required(ErrorMessage = "Description is required.")]
+        public string? Id { get; set; }  // For update
+        public string Name { get; set; }
+        public byte[]? ImageData { get; set; }
         public string? Description { get; set; }
-        public DateTime? CreatedAt { get; set; }
+        public string? ImagePath { get; set; } // For preview
     }
+
+
 }

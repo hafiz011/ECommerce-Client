@@ -28,16 +28,32 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/GitHub/Ecommerce.Client/Layout/CategorySidebar.razor]
+build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XENhdGVnb3J5U2lkZWJhci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/GitHub/Ecommerce.Client/Layout/Footer.razor]
+build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XEZvb3Rlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/GitHub/Ecommerce.Client/Layout/Header.razor]
+build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XEhlYWRlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/GitHub/Ecommerce.Client/Layout/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XE1haW5MYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/GitHub/Ecommerce.Client/Pages/AddCategory.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkQ2F0ZWdvcnkucmF6b3I=
+[D:/GitHub/Ecommerce.Client/Layout/MobileMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XE1vYmlsZU1lbnUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/GitHub/Ecommerce.Client/Pages/Categories.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2F0ZWdvcmllcy5yYXpvcg==
+[D:/GitHub/Ecommerce.Client/Pages/Admin/Categories.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQ2F0ZWdvcmllcy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/GitHub/Ecommerce.Client/Pages/Categorics.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2F0ZWdvcmljcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/GitHub/Ecommerce.Client/Pages/Home.razor]

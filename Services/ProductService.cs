@@ -12,6 +12,50 @@ namespace Ecommerce.Client.Services
             _http = http;
         }
 
+        public async Task<List<ProductDto>> GetFeaturedProducts(int take = 12)
+        {
+            try
+            {
+                var res = await _http.GetFromJsonAsync<List<ProductDto>>($"Products/featured?take={take}");
+                return res ?? new List<ProductDto>();
+            }
+            catch
+            {
+                return new List<ProductDto>();
+            }
+        }
+
+        public async Task<ProductDto?> GetById(string id)
+        {
+            try
+            {
+                return await _http.GetFromJsonAsync<ProductDto>($"Products/{id}");
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<ProductDto>> GetProductsByCategory(string categoryId)
+        {
+            var products = await _http.GetFromJsonAsync<List<ProductDto>>(
+                $"Product/bycategory/{categoryId}");
+
+            return products ?? new List<ProductDto>();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
         public async Task<List<ProductDto>> GetAllAsync()
         {
             var products = await _http.GetFromJsonAsync<List<ProductDto>>("Product");

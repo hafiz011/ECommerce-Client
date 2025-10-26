@@ -1,4 +1,4 @@
-﻿@page "/product/{Id}"
+﻿@* @page "/product/{Id}"
 @using Ecommerce.Client.Models
 @using Ecommerce.Client.Services
 @inject ProductService ProductService
@@ -33,4 +33,4 @@ else
     }
 
     void Back() => Navigation.NavigateTo("/products");
-}
+} *@

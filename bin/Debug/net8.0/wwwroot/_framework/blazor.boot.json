@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "Ecommerce.Client",
   "resources": {
-    "hash": "sha256-qxqeaxoyGG6e4Ff8xBQVfx0PgtfoWvzMyWl6SokisR8=",
+    "hash": "sha256-a+uX42rJ1ow6HhSyBISp5aMvAv6vQ5i+uY3r3PHG3Qw=",
     "jsModuleNative": {
       "dotnet.native.js": "sha256-RiGT44TFZmHOY+Oqvb8o8r+BJVWex6+dPxFxrOiWvFY="
     },
@@ -210,10 +210,10 @@
       "mscorlib.wasm": "sha256-Im6xq+lOse4P/VnAyrA3hwPstV67V5dB0EwQWcjipyE=",
       "netstandard.wasm": "sha256-PK0GLtj6kQVtZPzq0FZlnSdHh7geujg80LqKdJXA4pI=",
       "System.Private.CoreLib.wasm": "sha256-gEwccs7GbRSPGmeWBOKxNroYfyM+mZ7hqbP3ki1iwX0=",
-      "Ecommerce.Client.wasm": "sha256-lg1yTGz+kqDDe0W5v+lOu0j7hNRTl9pqqHSSK0CGiXk="
+      "Ecommerce.Client.wasm": "sha256-qjkZx1bSxMlobmmn7RsJ0xYWX/jZmF96LL13nwR87do="
     },
     "pdb": {
-      "Ecommerce.Client.pdb": "sha256-MsFUgJ+rDnEMab25lob6iY2zO1fISfANb1AkTHUfyRk="
+      "Ecommerce.Client.pdb": "sha256-5sfu9BMXRYCJMd8wpOtAC/QPfablx/M0dzbFwK5D9Mg="
     }
   },
   "cacheBootResources": true,
