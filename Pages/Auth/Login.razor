@@ -1,0 +1,74 @@
+﻿@page "/login"
+@inject HttpClient Http
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager Navigation
+@inject CustomAuthStateProvider AuthStateProvider
+
+<h3>Login</h3>
+
+<EditForm Model="@loginModel" OnValidSubmit="HandleLogin">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputText @bind-Value="loginModel.Email" placeholder="Email" class="form-control" />
+    <InputText @bind-Value="loginModel.Password" placeholder="Password" type="password" class="form-control mt-2" />
+
+    <button class="btn btn-primary mt-3" type="submit">Login</button>
+</EditForm>
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <div class="alert alert-danger mt-2">@message</div>
+}
+
+@code {
+    private LoginModel loginModel = new();
+    private string message;
+
+    private async Task HandleLogin()
+    {
+        try
+        {
+            var response = await Http.PostAsJsonAsync("api/auth/login", loginModel);
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadFromJsonAsync<ErrorResponse>();
+                message = error?.Message ?? "Login failed";
+                return;
+            }
+
+            var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
+            await LocalStorage.SetItemAsync("authToken", result.Token);
+            AuthStateProvider.NotifyUserAuthentication();
+
+            // Redirect based on role
+            if (result.Role == "Admin")
+                Navigation.NavigateTo("/admin");
+            else if (result.Role == "Seller")
+                Navigation.NavigateTo("/seller");
+            else
+                Navigation.NavigateTo("/user");
+        }
+        catch (Exception ex)
+        {
+            message = ex.Message;
+        }
+    }
+
+    public class LoginModel
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
+
+    public class LoginResponse
+    {
+        public string Token { get; set; }
+        public string Role { get; set; }
+    }
+
+    public class ErrorResponse
+    {
+        public string Message { get; set; }
+    }
+}

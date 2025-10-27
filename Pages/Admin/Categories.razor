@@ -1,4 +1,7 @@
 ﻿@page "/admin/categories"
+@* @using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admin")]
+@layout AdminLayout *@
 @using Ecommerce.Client.Models
 @using Ecommerce.Client.Services
 @inject CategoryService CategoryService

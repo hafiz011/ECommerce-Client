@@ -16,7 +16,7 @@ namespace Ecommerce.Client.Services
         {
             try
             {
-                var res = await _http.GetFromJsonAsync<List<ProductDto>>($"Products/featured?take={take}");
+                var res = await _http.GetFromJsonAsync<List<ProductDto>>($"Product/featured?take={take}");
                 return res ?? new List<ProductDto>();
             }
             catch
@@ -29,7 +29,7 @@ namespace Ecommerce.Client.Services
         {
             try
             {
-                return await _http.GetFromJsonAsync<ProductDto>($"Products/{id}");
+                return await _http.GetFromJsonAsync<ProductDto>($"Product/{id}");
             }
             catch
             {
@@ -53,14 +53,50 @@ namespace Ecommerce.Client.Services
 
 
 
-
-
-
-        public async Task<List<ProductDto>> GetAllAsync()
+        public async Task<PagedResult<ProductDto>> GetProductsPaged(int page = 1, int pageSize = 20)
         {
-            var products = await _http.GetFromJsonAsync<List<ProductDto>>("Product");
-            return products ?? new List<ProductDto>();
+            try
+            {
+                var res = await _http.GetFromJsonAsync<PagedResult<ProductDto>>($"Product/paged?page={page}&pageSize={pageSize}");
+                return res ?? new PagedResult<ProductDto>();
+            }
+            catch
+            {
+                return new PagedResult<ProductDto>();
+            }
         }
+
+        public async Task<PagedResult<ProductDto>> GetProductsByFiltersPaged(FilterParams filters, int page = 1, int pageSize = 20)
+        {
+            try
+            {
+                var qs = new List<string>();
+                if (!string.IsNullOrWhiteSpace(filters.CategoryId)) qs.Add($"category={Uri.EscapeDataString(filters.CategoryId)}");
+                if (filters.MinPrice.HasValue) qs.Add($"priceMin={filters.MinPrice.Value}");
+                if (filters.MaxPrice.HasValue) qs.Add($"priceMax={filters.MaxPrice.Value}");
+                if (!string.IsNullOrWhiteSpace(filters.Search)) qs.Add($"q={Uri.EscapeDataString(filters.Search)}");
+
+                qs.Add($"page={page}");
+                qs.Add($"pageSize={pageSize}");
+
+                var query = "?" + string.Join("&", qs);
+                var res = await _http.GetFromJsonAsync<PagedResult<ProductDto>>($"Product/filterpaged{query}");
+                return res ?? new PagedResult<ProductDto>();
+            }
+            catch
+            {
+                return new PagedResult<ProductDto>();
+            }
+        }
+
+
+
+
+
+
+
+
+
 
         public async Task<ProductDto?> GetByIdAsync(string id)
         {

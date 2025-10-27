@@ -1,85 +1,171 @@
 ﻿@page "/products"
-@using Ecommerce.Client.Services
 @using Ecommerce.Client.Models
 @inject ProductService ProductService
+@inject NavigationManager Navigation
 
-<div class="d-flex">
-    <CategorySidebar SelectedCategoryId="@selectedCategory"
-                     OnCategorySelected="FilterProducts" />
+<div class="row gx-4">
+    <div class="col-lg-3 d-none d-lg-block">
+        <Sidebar OnFiltersChanged="OnFiltersChanged" />
+    </div>
 
-    <div class="container-fluid">
-        <h4 class="mt-3">@pageTitle</h4>
+    <div class="col-12 col-lg-9">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="mb-0">@pageTitle</h4>
+            <div class="d-flex align-items-center">
+                <label class="me-2 small text-muted">Show</label>
+                <select class="form-select form-select-sm me-3" style="width:85px" @bind="PageSize">
+                    <option value="8">8</option>
+                    <option value="16">16</option>
+                    <option value="24">24</option>
+                </select>
+            </div>
+        </div>
 
         @if (isLoading)
         {
-            <p class="text-center mt-5">Loading products...</p>
+            <div class="text-center py-5">
+                <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>
+            </div>
         }
-        else if (products.Count == 0)
+        else if (pagedResult == null || pagedResult.Items.Count == 0)
         {
-            <p class="text-center text-muted mt-5">No products found.</p>
+            <div class="text-center text-muted py-5">No products found for selected filters.</div>
         }
         else
         {
-            <div class="row g-3 mt-2">
-                @foreach (var p in products)
+            <div class="row g-3">
+                @foreach (var p in pagedResult.Items)
                 {
                     <div class="col-6 col-md-4 col-lg-3">
-                        <div class="card h-100 shadow-sm product-card">
-                            <img src="@p.ImageUrl" class="card-img-top">
-                            <div class="card-body">
-                                <h6>@p.Title</h6>
-                                <p class="fw-bold text-primary">$@p.Price</p>
-                            </div>
-                        </div>
+                        <ProductCard Product="@p" />
                     </div>
                 }
             </div>
+
+            <!-- Pagination controls -->
+            <nav class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item @(CurrentPage == 1 ? "disabled" : "")">
+                        <button class="page-link" @onclick="() => ChangePage(CurrentPage - 1)">Previous</button>
+                    </li>
+
+                    @foreach (var pg in GetPageRange())
+                    {
+                        <li class="page-item @(pg == CurrentPage ? "active" : "")">
+                            <button class="page-link" @onclick="() => ChangePage(pg)">@pg</button>
+                        </li>
+                    }
+
+                    <li class="page-item @(CurrentPage == pagedResult.TotalPages ? "disabled" : "")">
+                        <button class="page-link" @onclick="() => ChangePage(CurrentPage + 1)">Next</button>
+                    </li>
+                </ul>
+            </nav>
         }
     </div>
 </div>
 
-<style>
-    .product-card img {
-        height: 180px;
-        object-fit: cover;
-    }
-</style>
+@if (ShowMobileFilters)
+{
+    <div class="offcanvas-backdrop show d-block" @onclick="() => ShowMobileFilters = false"></div>
+    <div class="offcanvas show d-block" style="position:fixed; bottom:0; left:0; right:0; top:20%; z-index:1200; background:#fff; border-top-left-radius:12px; border-top-right-radius:12px; overflow:auto;">
+        <div class="p-3">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="mb-0">Filters</h6>
+                <button class="btn btn-sm btn-outline-secondary" @onclick="() => ShowMobileFilters = false">Close</button>
+            </div>
+
+            <Sidebar OnFiltersChanged="OnFiltersChanged" />
+        </div>
+    </div>
+}
 
 @code {
-    private List<ProductDto> products = new();
-    private bool isLoading = false;
-    private string? selectedCategory = null;
+    private PagedResult<ProductDto>? pagedResult;
+    private bool isLoading = true;
+    private bool ShowMobileFilters = false;
     private string pageTitle = "All Products";
+
+    // paging state
+    private int CurrentPage = 1;
+
+    // PageSize with reactive setter
+    private int _pageSize = 16;
+    private int PageSize
+    {
+        get => _pageSize;
+        set
+        {
+            if (_pageSize != value)
+            {
+                _pageSize = value;
+                _ = LoadPage(1); // reload page when page size changes
+            }
+        }
+    }
+
+    // active filters
+    private FilterParams activeFilters = new();
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadAllProducts();
+        await LoadPage(1);
     }
 
-    private async Task LoadAllProducts()
+    private async Task LoadPage(int page)
     {
         isLoading = true;
-        products = await ProductService.GetAllProducts();
-        pageTitle = "All Products";
-        isLoading = false;
-    }
+        CurrentPage = page;
 
-    private async Task FilterProducts(string? categoryId)
-    {
-        selectedCategory = categoryId;
-        isLoading = true;
-
-        if (string.IsNullOrEmpty(categoryId))
+        if (activeFilters == null || (activeFilters.CategoryId == null && !activeFilters.MinPrice.HasValue && !activeFilters.MaxPrice.HasValue))
         {
-            await LoadAllProducts();
+            pagedResult = await ProductService.GetProductsPaged(CurrentPage, PageSize);
+            pageTitle = "All Products";
         }
         else
         {
-            products = await ProductService.GetProductsByCategory(categoryId);
-            pageTitle = $"Products in Selected Category";
+            pagedResult = await ProductService.GetProductsByFiltersPaged(activeFilters, CurrentPage, PageSize);
+            pageTitle = activeFilters.CategoryId != null ? "Filtered Products" : "Filtered Results";
         }
 
         isLoading = false;
         StateHasChanged();
+    }
+
+    private async Task OnFiltersChanged(FilterParams filters)
+    {
+        activeFilters = filters ?? new FilterParams();
+        await LoadPage(1); // reset to first page when filters change
+    }
+
+    private async Task ChangePage(int page)
+    {
+        if (page < 1 || pagedResult == null) return;
+        if (page > pagedResult.TotalPages) return;
+        await LoadPage(page);
+    }
+
+    private IEnumerable<int> GetPageRange()
+    {
+        if (pagedResult == null) yield break;
+        var total = pagedResult.TotalPages;
+        var current = CurrentPage;
+        var start = Math.Max(1, current - 2);
+        var end = Math.Min(total, current + 2);
+
+        if (end - start < 4)
+        {
+            start = Math.Max(1, end - 4);
+            end = Math.Min(total, start + 4);
+        }
+
+        for (int i = start; i <= end; i++)
+            yield return i;
+    }
+
+    private async Task ClearFilters()
+    {
+        activeFilters = new FilterParams();
+        await LoadPage(1);
     }
 }

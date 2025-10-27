@@ -28,8 +28,8 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/GitHub/Ecommerce.Client/Layout/CategorySidebar.razor]
-build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XENhdGVnb3J5U2lkZWJhci5yYXpvcg==
+[D:/GitHub/Ecommerce.Client/Layout/AdminLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XEFkbWluTGF5b3V0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/GitHub/Ecommerce.Client/Layout/Footer.razor]
@@ -48,12 +48,48 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XE1vYmlsZU1lbnUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/GitHub/Ecommerce.Client/Layout/NavMenuAdmin.razor]
+build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XE5hdk1lbnVBZG1pbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/GitHub/Ecommerce.Client/Layout/NavMenuSeller.razor]
+build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XE5hdk1lbnVTZWxsZXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/GitHub/Ecommerce.Client/Layout/SellerLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XFNlbGxlckxheW91dC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/GitHub/Ecommerce.Client/Layout/Sidebar.razor]
+build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XFNpZGViYXIucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/GitHub/Ecommerce.Client/Pages/Admin/Categories.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cQ2F0ZWdvcmllcy5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/GitHub/Ecommerce.Client/Pages/Categorics.razor]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2F0ZWdvcmljcy5yYXpvcg==
+[D:/GitHub/Ecommerce.Client/Pages/Admin/Dashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cRGFzaGJvYXJkLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/GitHub/Ecommerce.Client/Pages/Admin/Products.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cUHJvZHVjdHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/GitHub/Ecommerce.Client/Pages/Auth/ForgotPassword.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aFxGb3Jnb3RQYXNzd29yZC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/GitHub/Ecommerce.Client/Pages/Auth/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aFxMb2dpbi5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/GitHub/Ecommerce.Client/Pages/Auth/Register.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aFxSZWdpc3Rlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/GitHub/Ecommerce.Client/Pages/Auth/ResetPassword.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aFxSZXNldFBhc3N3b3JkLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/GitHub/Ecommerce.Client/Pages/Home.razor]
@@ -70,6 +106,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/GitHub/Ecommerce.Client/Pages/Products.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/GitHub/Ecommerce.Client/Pages/Seller/Products.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VsbGVyXFByb2R1Y3RzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/GitHub/Ecommerce.Client/Services/Seller/Dashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = U2VydmljZXNcU2VsbGVyXERhc2hib2FyZC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/GitHub/Ecommerce.Client/_Imports.razor]

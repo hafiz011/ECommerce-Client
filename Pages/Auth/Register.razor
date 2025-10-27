@@ -1,0 +1,64 @@
+﻿@page "/register"
+@inject HttpClient Http
+@inject NavigationManager Navigation
+
+<h3>Register</h3>
+
+<EditForm Model="@registerModel" OnValidSubmit="HandleRegister">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputText @bind-Value="registerModel.FirstName" placeholder="First Name" class="form-control" />
+    <InputText @bind-Value="registerModel.LastName" placeholder="Last Name" class="form-control mt-2" />
+    <InputText @bind-Value="registerModel.Email" placeholder="Email" class="form-control mt-2" />
+    <InputText @bind-Value="registerModel.Password" placeholder="Password" type="password" class="form-control mt-2" />
+    <InputText @bind-Value="registerModel.Phone" placeholder="Phone" class="form-control mt-2" />
+
+    <button class="btn btn-primary mt-3" type="submit">Register</button>
+</EditForm>
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <div class="alert alert-info mt-2">@message</div>
+}
+
+@code {
+    private RegisterModel registerModel = new();
+    private string message;
+
+    private async Task HandleRegister()
+    {
+        try
+        {
+            var response = await Http.PostAsJsonAsync("api/auth/register", registerModel);
+            var result = await response.Content.ReadFromJsonAsync<RegisterResponse>();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                message = result?.Message ?? "Registration failed";
+                return;
+            }
+
+            message = "Registration successful! Please check your email.";
+            Navigation.NavigateTo("/login");
+        }
+        catch (Exception ex)
+        {
+            message = ex.Message;
+        }
+    }
+
+    public class RegisterModel
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string Phone { get; set; }
+    }
+
+    public class RegisterResponse
+    {
+        public string Message { get; set; }
+    }
+}

@@ -5,34 +5,56 @@
 <div class="product-card card border-0">
     <div class="card-img-top position-relative">
         <img class="product-main img-fluid" src="@Product.ImageUrl" alt="@Product.Name" />
-        @if (!string.IsNullOrEmpty(Product.HoverImageUrl))
+        @if (Product.Images?.Count > 1)
         {
-            <img class="product-hover img-fluid" src="@Product.HoverImageUrl" alt="@Product.Name" />
+            <img class="product-hover img-fluid" src="@Product.Images[1]" alt="@Product.Name" />
         }
+
         <div class="badge-position">
-            @if (Product.IsOnSale)
+            @if (Product.HasActiveDiscount && Product.DiscountPercent > 0)
             {
-                <span class="badge bg-danger">Sale</span>
+                <span class="badge bg-danger">-@Product.DiscountPercent%</span>
             }
             else if (Product.IsNew)
             {
                 <span class="badge bg-success">New</span>
             }
         </div>
+
         <button class="btn btn-outline-secondary quick-add" title="Add to cart" @onclick="AddToCart">
             <i class="bi bi-cart-plus"></i>
         </button>
     </div>
+
     <div class="card-body pt-2 px-0">
         <h6 class="card-title mb-1">@Product.Name</h6>
         <div class="d-flex align-items-center mb-2">
-            <div class="price me-2">@Product.Price.ToString("C")</div>
-            @if (Product.OldPrice != null)
+            @if (Product.HasActiveDiscount && Product.DiscountPercent > 0)
             {
-                <div class="old-price text-muted text-decoration-line-through">@Product.OldPrice.Value.ToString("C")</div>
+                <div class="price text-danger fw-bold me-2">@Product.FinalPrice.ToString("C")</div>
+                <div class="old-price text-muted text-decoration-line-through">@Product.Price.ToString("C")</div>
+            }
+            else
+            {
+                <div class="price fw-bold">@Product.Price.ToString("C")</div>
             }
         </div>
-        <div class="small text-muted">@Product.ShortDescription</div>
+
+        @if (!string.IsNullOrWhiteSpace(Product.Description))
+        {
+            <div class="small text-muted">@Product.Description</div>
+        }
+
+        <div class="small text-muted mt-1">
+            @if (Product.StockQuantity > 0)
+            {
+                <span class="text-success">In Stock</span>
+            }
+            else
+            {
+                <span class="text-danger">Out of Stock</span>
+            }
+        </div>
     </div>
 </div>
 
