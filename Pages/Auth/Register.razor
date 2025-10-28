@@ -1,64 +1,204 @@
 ﻿@page "/register"
-@inject HttpClient Http
+@using System.Text.Json
+@using System.ComponentModel.DataAnnotations
+@inject HttpClient _Http
 @inject NavigationManager Navigation
 
-<h3>Register</h3>
+<div class="container d-flex justify-content-center align-items-center min-vh-100 py-4">
+    <div class="card shadow-lg border-0 rounded-4" style="max-width: 450px; width: 100%;">
+        <div class="card-header bg-primary text-white text-center py-4 rounded-top-4">
+            <h2 class="card-title mb-2 fw-bold">Create Your Account</h2>
+            <p class="card-text mb-0 opacity-75">Join us today and get started</p>
+        </div>
+        <div class="card-body p-4 p-md-5">
+            <EditForm Model="@registerModel" OnValidSubmit="HandleRegister">
+                <DataAnnotationsValidator />
+                <ValidationSummary class="alert alert-danger border-0 rounded-3 mb-4" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    Please fix the errors below.
+                </ValidationSummary>
 
-<EditForm Model="@registerModel" OnValidSubmit="HandleRegister">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold text-secondary mb-2">First Name</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0">
+                                <i class="bi bi-person text-primary"></i>
+                            </span>
+                            <InputText @bind-Value="registerModel.FirstName" class="form-control border-start-0 ps-0" placeholder="e.g., John" />
+                        </div>
+                        <ValidationMessage For="@(() => registerModel.FirstName)" class="text-danger small mt-1" />
+                    </div>
 
-    <InputText @bind-Value="registerModel.FirstName" placeholder="First Name" class="form-control" />
-    <InputText @bind-Value="registerModel.LastName" placeholder="Last Name" class="form-control mt-2" />
-    <InputText @bind-Value="registerModel.Email" placeholder="Email" class="form-control mt-2" />
-    <InputText @bind-Value="registerModel.Password" placeholder="Password" type="password" class="form-control mt-2" />
-    <InputText @bind-Value="registerModel.Phone" placeholder="Phone" class="form-control mt-2" />
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold text-secondary mb-2">Last Name</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0">
+                                <i class="bi bi-person text-primary"></i>
+                            </span>
+                            <InputText @bind-Value="registerModel.LastName" class="form-control border-start-0 ps-0" placeholder="e.g., Doe" />
+                        </div>
+                        <ValidationMessage For="@(() => registerModel.LastName)" class="text-danger small mt-1" />
+                    </div>
+                </div>
 
-    <button class="btn btn-primary mt-3" type="submit">Register</button>
-</EditForm>
+                <div class="mb-4">
+                    <label class="form-label fw-semibold text-secondary mb-2">Phone Number</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0">
+                            <i class="bi bi-telephone text-primary"></i>
+                        </span>
+                        <InputText @bind-Value="registerModel.Phone" class="form-control border-start-0 ps-0" placeholder="e.g., +1 (555) 123-4567" />
+                    </div>
+                    <ValidationMessage For="@(() => registerModel.Phone)" class="text-danger small mt-1" />
+                </div>
 
-@if (!string.IsNullOrEmpty(message))
-{
-    <div class="alert alert-info mt-2">@message</div>
-}
+                <div class="mb-4">
+                    <label class="form-label fw-semibold text-secondary mb-2">Email Address</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0">
+                            <i class="bi bi-envelope text-primary"></i>
+                        </span>
+                        <InputText @bind-Value="registerModel.Email" type="email" class="form-control border-start-0 ps-0" placeholder="e.g., john.doe@example.com" />
+                    </div>
+                    <ValidationMessage For="@(() => registerModel.Email)" class="text-danger small mt-1" />
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold text-secondary mb-2">Password</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0">
+                            <i class="bi bi-lock text-primary"></i>
+                        </span>
+                        <InputText @bind-Value="registerModel.Password" type="password" class="form-control border-start-0 ps-0" placeholder="At least 8 characters" />
+                    </div>
+                    <ValidationMessage For="@(() => registerModel.Password)" class="text-danger small mt-1" />
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold text-secondary mb-2">Confirm Password</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0">
+                            <i class="bi bi-lock text-primary"></i>
+                        </span>
+                        <InputText @bind-Value="registerModel.ConfirmPassword" type="password" class="form-control border-start-0 ps-0" placeholder="Repeat your password" />
+                    </div>
+                    <ValidationMessage For="@(() => registerModel.ConfirmPassword)" class="text-danger small mt-1" />
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 py-3 fw-semibold rounded-3 mb-3" disabled="@isSubmitting">
+                    <span class="d-flex align-items-center justify-content-center">
+                        @if (isSubmitting)
+                        {
+                            <div class="spinner-border spinner-border-sm me-2 text-white" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        }
+                        Sign Up
+                    </span>
+                </button>
+            </EditForm>
+
+            @if (!string.IsNullOrEmpty(message))
+            {
+                <div class="alert @(message.Contains("successful") ? "alert-success border-0 rounded-3" : "alert-danger border-0 rounded-3") mb-3" role="alert">
+                    <i class="bi @(message.Contains("successful") ? "bi-check-circle-fill" : "bi-x-circle-fill") me-2"></i>
+                    @message
+                </div>
+            }
+
+            <div class="text-center">
+                <small class="text-muted">
+                    Already have an account?
+                    <a href="/login" class="text-primary fw-semibold text-decoration-none">Sign in here</a>
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
     private RegisterModel registerModel = new();
     private string message;
+    private bool isSubmitting;
 
     private async Task HandleRegister()
     {
+        if (registerModel.Password != registerModel.ConfirmPassword)
+        {
+            message = "Passwords do not match.";
+            return;
+        }
+
+        isSubmitting = true;
+        message = string.Empty;
+
         try
         {
-            var response = await Http.PostAsJsonAsync("api/auth/register", registerModel);
-            var result = await response.Content.ReadFromJsonAsync<RegisterResponse>();
+            var response = await _Http.PostAsJsonAsync("auth/register", registerModel);
 
-            if (!response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                message = result?.Message ?? "Registration failed";
-                return;
+                var result = await response.Content.ReadFromJsonAsync<RegisterResponse>();
+                message = result?.Message ?? "Registration successful!";
+                Navigation.NavigateTo("/login");
             }
+            else
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                try
+                {
+                    var errorResult = JsonSerializer.Deserialize<RegisterResponse>(errorContent,
+                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
-            message = "Registration successful! Please check your email.";
-            Navigation.NavigateTo("/login");
+                    message = errorResult?.Message ?? "Registration failed.";
+                }
+                catch
+                {
+                    message = "Registration failed: " + errorContent;
+                }
+            }
         }
         catch (Exception ex)
         {
-            message = ex.Message;
+            message = $"Error: {ex.Message}";
+        }
+        finally
+        {
+            isSubmitting = false;
         }
     }
 
     public class RegisterModel
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public string Phone { get; set; }
+        [Required(ErrorMessage = "First name is required.")]
+        [StringLength(50, ErrorMessage = "First name cannot exceed 50 characters.")]
+        public string FirstName { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Last name is required.")]
+        [StringLength(50, ErrorMessage = "Last name cannot exceed 50 characters.")]
+        public string LastName { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Email is required.")]
+        [EmailAddress(ErrorMessage = "Invalid email format.")]
+        public string Email { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Password is required.")]
+        [StringLength(100, MinimumLength = 8, ErrorMessage = "Password must be at least 8 characters long.")]
+        public string Password { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Confirm password is required.")]
+        [Compare("Password", ErrorMessage = "Passwords do not match.")]
+        public string ConfirmPassword { get; set; } = string.Empty;
+
+        [Phone(ErrorMessage = "Invalid phone number.")]
+        [StringLength(20, ErrorMessage = "Phone number cannot exceed 20 characters.")]
+        public string Phone { get; set; } = string.Empty;
     }
 
     public class RegisterResponse
     {
-        public string Message { get; set; }
+        public string Message { get; set; } = string.Empty;
+        public IEnumerable<object> Errors { get; set; } = Enumerable.Empty<object>();
     }
 }

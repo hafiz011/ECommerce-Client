@@ -1,74 +1,177 @@
 ﻿@page "/login"
-@inject HttpClient Http
+@using System.Text.Json
+@using System.ComponentModel.DataAnnotations
+@inject HttpClient _Http
 @inject ILocalStorageService LocalStorage
 @inject NavigationManager Navigation
 @inject CustomAuthStateProvider AuthStateProvider
 
-<h3>Login</h3>
+<div class="container d-flex justify-content-center align-items-center min-vh-100 py-4">
+    <div class="card shadow-lg border-0 rounded-4" style="max-width: 400px; width: 100%;">
+        <!-- Card Header -->
+        <div class="card-header bg-primary text-white text-center py-4 rounded-top-4">
+            <h2 class="card-title mb-2 fw-bold">Sign In</h2>
+            <p class="card-text mb-0 opacity-75">Enter your credentials to login</p>
+        </div>
 
-<EditForm Model="@loginModel" OnValidSubmit="HandleLogin">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
+        <!-- Card Body -->
+        <div class="card-body p-4 p-md-5">
+            <EditForm Model="@loginModel" OnValidSubmit="HandleLogin">
+                <DataAnnotationsValidator />
+                <ValidationSummary class="alert alert-danger border-0 rounded-3 mb-4" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    Please fix the errors below.
+                </ValidationSummary>
 
-    <InputText @bind-Value="loginModel.Email" placeholder="Email" class="form-control" />
-    <InputText @bind-Value="loginModel.Password" placeholder="Password" type="password" class="form-control mt-2" />
+                <div class="mb-3">
+                    <label class="form-label fw-semibold text-secondary mb-2">Email Address</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0">
+                            <i class="bi bi-envelope text-primary"></i>
+                        </span>
+                        <InputText @bind-Value="loginModel.Email" type="email" class="form-control border-start-0 ps-0" placeholder="john.doe@example.com" />
+                    </div>
+                    <ValidationMessage For="@(() => loginModel.Email)" class="text-danger small mt-1" />
+                </div>
 
-    <button class="btn btn-primary mt-3" type="submit">Login</button>
-</EditForm>
+                <div class="mb-4">
+                    <label class="form-label fw-semibold text-secondary mb-2">Password</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0">
+                            <i class="bi bi-lock text-primary"></i>
+                        </span>
+                        <InputText @bind-Value="loginModel.Password" type="password" class="form-control border-start-0 ps-0" placeholder="Enter your password" />
+                    </div>
+                    <ValidationMessage For="@(() => loginModel.Password)" class="text-danger small mt-1" />
+                </div>
 
-@if (!string.IsNullOrEmpty(message))
-{
-    <div class="alert alert-danger mt-2">@message</div>
-}
+                <button type="submit" class="btn btn-primary w-100 py-3 fw-semibold rounded-3" disabled="@isSubmitting">
+                    @if (isSubmitting)
+                    {
+                        <span class="spinner-border spinner-border-sm me-2 text-white" role="status"></span>
+                    }
+                    Sign In
+                </button>
+            </EditForm>
+
+            @if (!string.IsNullOrEmpty(message))
+            {
+                <div class="alert @(message.Contains("success") ? "alert-success" : "alert-danger") border-0 rounded-3 mt-3" role="alert">
+                    <i class="bi @(message.Contains("success") ? "bi-check-circle-fill" : "bi-x-circle-fill") me-2"></i>
+                    @message
+                </div>
+            }
+
+            <div class="text-center mt-3">
+                <small class="text-muted">
+                    Don't have an account?
+                    <a href="/register" class="text-primary fw-semibold text-decoration-none">Sign up here</a>
+                </small>
+            </div>
+            <div class="text-center mt-3">
+                <small class="text-muted">
+                    Forgot Password?
+                    <a href="/forgot-password" class="text-primary fw-semibold text-decoration-none">Click hare</a>
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
     private LoginModel loginModel = new();
     private string message;
+    private bool isSubmitting;
 
     private async Task HandleLogin()
     {
+        message = string.Empty;
+        isSubmitting = true;
+
         try
         {
-            var response = await Http.PostAsJsonAsync("api/auth/login", loginModel);
-            if (!response.IsSuccessStatusCode)
+            var response = await _Http.PostAsJsonAsync("auth/login", loginModel);
+
+            if (response.IsSuccessStatusCode)
             {
-                var error = await response.Content.ReadFromJsonAsync<ErrorResponse>();
-                message = error?.Message ?? "Login failed";
-                return;
+                var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
+
+                if (result != null)
+                {
+                    // Save token to local storage
+                    await LocalStorage.SetItemAsync("authToken", result.Token);
+                    AuthStateProvider.NotifyUserAuthentication();
+
+                    // Redirect based on role
+                    switch (result.Role)
+                    {
+                        case "Admin":
+                            Navigation.NavigateTo("/admin/Dashboard");
+                            break;
+                        case "Seller":
+                            Navigation.NavigateTo("/seller/Dashboard");
+                            break;
+                        default:
+                            Navigation.NavigateTo("/");
+                            break;
+                    }
+                }
             }
-
-            var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
-            await LocalStorage.SetItemAsync("authToken", result.Token);
-            AuthStateProvider.NotifyUserAuthentication();
-
-            // Redirect based on role
-            if (result.Role == "Admin")
-                Navigation.NavigateTo("/admin");
-            else if (result.Role == "Seller")
-                Navigation.NavigateTo("/seller");
             else
-                Navigation.NavigateTo("/user");
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                try
+                {
+                    var errorResult = JsonSerializer.Deserialize<ErrorResponse>(errorContent, new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    });
+
+                    message = errorResult?.Message ?? "Login failed.";
+                }
+                catch
+                {
+                    message = "Login failed: " + errorContent;
+                }
+            }
         }
         catch (Exception ex)
         {
-            message = ex.Message;
+            message = $"Error: {ex.Message}";
+        }
+        finally
+        {
+            isSubmitting = false;
         }
     }
 
     public class LoginModel
     {
-        public string Email { get; set; }
-        public string Password { get; set; }
+        [Required(ErrorMessage = "Email is required.")]
+        [EmailAddress(ErrorMessage = "Invalid email format.")]
+        public string Email { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Password is required.")]
+        public string Password { get; set; } = string.Empty;
     }
 
     public class LoginResponse
     {
-        public string Token { get; set; }
-        public string Role { get; set; }
+        public string Token { get; set; } = string.Empty;
+        public string Role { get; set; } = string.Empty;
+
+        public UserDto User { get; set; } = new();
+    }
+
+    public class UserDto
+    {
+        public string Id { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+        public string FullName { get; set; } = string.Empty;
     }
 
     public class ErrorResponse
     {
-        public string Message { get; set; }
+        public string Message { get; set; } = string.Empty;
     }
 }

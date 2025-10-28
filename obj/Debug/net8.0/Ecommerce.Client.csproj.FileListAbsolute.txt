@@ -815,12 +815,9 @@ D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\scopedcss\bundle\Ecommerce.Client.st
 D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\blazor.build.boot-extension.json
 D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\blazor.boot.json
 D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\8ocwkmn3cm-mv535bwyet.gz
-D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\ofbghdybbp-d4bynu24md.gz
-D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\eih1j5zbq5-zetociqhzy.gz
 D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\rfp7n2fjdj-4f2wbgmfmy.gz
 D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\g1k8ogoy8j-yfczqllojr.gz
 D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\8cnj8xgw0q-w2gvf6pdcd.gz
-D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\012slja6bt-8pd59v0o54.gz
 D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\leahcae6mt-4njtqvtvgx.gz
 D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\d42r0row40-8kr5d0tjmo.gz
 D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\kvh0e0ulc5-0r3amze666.gz
@@ -1077,6 +1074,9 @@ D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\b5re6c7tnn-8s3epro04e.gz
 D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\vjb8dt4zsw-a5h4r7ey6y.gz
 D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\hbjs3dy9py-7rvzllyyln.gz
 D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\mk6rs2enxc-md6jy92bev.gz
-D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\27p8mes09i-pkc7v9tjwh.gz
-D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\5di70i66r7-yvcuemzm37.gz
-D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\613ailm9v9-m44cg5ntpy.gz
+D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\27p8mes09i-tx8716vtj5.gz
+D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\5di70i66r7-qteai33q6v.gz
+D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\ofbghdybbp-dts2i2wb2p.gz
+D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\eih1j5zbq5-uqvn9ovrt8.gz
+D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\012slja6bt-2tk2ozk4cz.gz
+D:\GitHub\Ecommerce.Client\obj\Debug\net8.0\compressed\613ailm9v9-74ka2ql3oz.gz

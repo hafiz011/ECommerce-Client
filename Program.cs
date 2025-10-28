@@ -8,21 +8,28 @@ using Microsoft.AspNetCore.Components.Authorization;
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
-builder.Services.AddScoped(sp => new HttpClient
-{
-    BaseAddress = new Uri(builder.Configuration["ApiBaseUrl"])
-});
+//builder.Services.AddScoped(sp => new HttpClient
+//{
+//    BaseAddress = new Uri(builder.Configuration["ApiBaseUrl"])
+//});
 
-// Blazored LocalStorage
+
+builder.Services.AddScoped<AuthMessageHandler>();
+builder.Services.AddHttpClient("ApiClient", client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["ApiBaseUrl"]);
+}).AddHttpMessageHandler<AuthMessageHandler>();
+
+
+
+// Register CustomAuthStateProvider
+builder.Services.AddScoped<CustomAuthStateProvider>();
+builder.Services.AddScoped<AuthenticationStateProvider>(sp => sp.GetRequiredService<CustomAuthStateProvider>());
+
+// Optional: Add Authorization
+builder.Services.AddAuthorizationCore();
 builder.Services.AddBlazoredLocalStorage();
 
-// Custom AuthenticationStateProvider
-builder.Services.AddScoped<CustomAuthStateProvider>();
-builder.Services.AddScoped<AuthenticationStateProvider>(provider =>
-    provider.GetRequiredService<CustomAuthStateProvider>());
-
-// Authorization
-builder.Services.AddAuthorizationCore();
 
 builder.Services.AddScoped<CategoryService>();
 builder.Services.AddScoped<ProductService>();
@@ -30,3 +37,4 @@ builder.Services.AddScoped<CartService>();
 
 
 await builder.Build().RunAsync();
+

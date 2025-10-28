@@ -32,6 +32,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XEFkbWluTGF5b3V0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/GitHub/Ecommerce.Client/Layout/Component.razor]
+build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XENvbXBvbmVudC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/GitHub/Ecommerce.Client/Layout/Footer.razor]
 build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XEZvb3Rlci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
@@ -56,6 +60,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XE5hdk1lbnVTZWxsZXIucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/GitHub/Ecommerce.Client/Layout/RoleBasedLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XFJvbGVCYXNlZExheW91dC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/GitHub/Ecommerce.Client/Layout/SellerLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = TGF5b3V0XFNlbGxlckxheW91dC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
@@ -74,6 +82,14 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/GitHub/Ecommerce.Client/Pages/Admin/Products.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cUHJvZHVjdHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/GitHub/Ecommerce.Client/Pages/Admin/Profile.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5cUHJvZmlsZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/GitHub/Ecommerce.Client/Pages/Auth/ConfirmEmail.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQXV0aFxDb25maXJtRW1haWwucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/GitHub/Ecommerce.Client/Pages/Auth/ForgotPassword.razor]
@@ -106,6 +122,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/GitHub/Ecommerce.Client/Pages/Products.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUHJvZHVjdHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/GitHub/Ecommerce.Client/Pages/Seller/Dashboard.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2VsbGVyXERhc2hib2FyZC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/GitHub/Ecommerce.Client/Pages/Seller/Products.razor]

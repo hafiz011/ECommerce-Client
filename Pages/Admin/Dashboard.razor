@@ -1,6 +1,15 @@
 ﻿@page "/admin/dashboard"
 @attribute [Authorize(Roles = "Admin")]
+@layout AdminLayout
 
+@code {
+    protected override void OnInitialized()
+    {
+        LayoutTitle = "Dashboard"; // Set title for the layout
+    }
+
+    private string LayoutTitle;
+}
 
 <h4 class="mb-4">Overview</h4>
 

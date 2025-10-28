@@ -125,3 +125,117 @@ body {
         width: 100%;
     }
 }
+
+
+/*register page*/
+.register-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.register-card {
+    max-width: 500px;
+    width: 100%;
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    background: white;
+}
+
+.card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-align: center;
+    padding: 2rem;
+}
+
+.card-title {
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 600;
+}
+
+.card-subtitle {
+    margin: 0.5rem 0 0 0;
+    opacity: 0.9;
+    font-size: 0.95rem;
+}
+
+.card-body {
+    padding: 2.5rem;
+}
+
+.input-group-outline {
+    border: 2px solid transparent;
+    border-radius: 12px;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+    .input-group-outline:focus-within {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+
+.input-group-text {
+    background: transparent;
+    border: none;
+    border-left: 2px solid #e9ecef;
+    border-radius: 0 12px 12px 0;
+}
+
+.form-label {
+    margin-bottom: 0.75rem;
+    color: #6c757d;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 12px;
+    transition: transform 0.2s ease-in-out;
+}
+
+    .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+.alert {
+    border: none;
+    border-radius: 12px;
+    font-size: 0.9rem;
+}
+
+/*.text-primary:hover {
+    color: #5a67d8 !important;
+}*/
+
+@media (max-width: 576px) {
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .card-header {
+        padding: 1.5rem;
+    }
+}
+
+.admin-container .sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+.sidebar a.nav-link.active {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: .375rem;
+}
+
+.sidebar a.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}

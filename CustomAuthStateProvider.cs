@@ -15,6 +15,7 @@ public class CustomAuthStateProvider : AuthenticationStateProvider
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
         var token = await _localStorage.GetItemAsync<string>("authToken");
+
         if (string.IsNullOrWhiteSpace(token))
         {
             return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));

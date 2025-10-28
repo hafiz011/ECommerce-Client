@@ -1,0 +1,103 @@
+﻿@page "/confirm-email"
+@inject HttpClient _Http
+@inject NavigationManager Navigation
+
+<div class="container d-flex justify-content-center align-items-center min-vh-100 py-4">
+    <div class="card shadow-sm p-4" style="max-width: 450px; width: 100%;">
+        <div class="card-body text-center">
+            <h3 class="card-title mb-3">Email Confirmation</h3>
+
+            @if (isLoading)
+            {
+                <div class="d-flex flex-column align-items-center">
+                    <div class="spinner-border text-primary mb-3" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="text-muted">Confirming your email, please wait...</p>
+                </div>
+            }
+            else if (!string.IsNullOrEmpty(message))
+            {
+                <div class="alert @alertClass" role="alert">@message</div>
+
+                @if (isSuccess)
+                {
+                    <button class="btn btn-primary mt-3" @onclick="GoToLogin">
+                        <i class="bi bi-box-arrow-in-right me-1"></i> Go to Login
+                    </button>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+
+@code {
+    [Parameter] public string userId { get; set; }
+    [Parameter] public string token { get; set; }
+
+    private bool isLoading = true;
+    private string message;
+    private bool isSuccess = false;
+    private string alertClass = "alert-info";
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Read query parameters from URL if not passed as parameters
+        var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
+        var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+        if (string.IsNullOrEmpty(userId)) userId = query["userId"];
+        if (string.IsNullOrEmpty(token)) token = query["token"];
+
+        if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
+        {
+            message = "Invalid confirmation link. Missing user ID or token.";
+            alertClass = "alert-danger";
+            isLoading = false;
+            return;
+        }
+
+        await ConfirmEmailAsync();
+    }
+
+    private async Task ConfirmEmailAsync()
+    {
+        try
+        {
+            var model = new { UserId = userId, Token = token };
+            var response = await _Http.PostAsJsonAsync("auth/confirm-email", model);
+
+            var result = await response.Content.ReadFromJsonAsync<ApiMessageResponse>();
+            if (response.IsSuccessStatusCode)
+            {
+                message = result?.Message ?? "Email confirmed successfully!";
+                alertClass = "alert-success";
+                isSuccess = true;
+            }
+            else
+            {
+                message = result?.Message ?? "Email confirmation failed.";
+                alertClass = "alert-danger";
+            }
+        }
+        catch (Exception ex)
+        {
+            message = $"Error: {ex.Message}";
+            alertClass = "alert-danger";
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private void GoToLogin()
+    {
+        Navigation.NavigateTo("/login");
+    }
+
+    public class ApiMessageResponse
+    {
+        public string Message { get; set; }
+    }
+}

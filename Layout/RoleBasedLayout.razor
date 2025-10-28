@@ -1,0 +1,30 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@inherits LayoutComponentBase
+
+@code {
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
+    private Type SelectedLayout { get; set; } = typeof(MainLayout);
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateTask;
+        var user = authState.User;
+
+        // Default Layout
+        SelectedLayout = typeof(MainLayout);
+
+        if (user.Identity?.IsAuthenticated == true)
+        {
+            if (user.IsInRole("Admin"))
+                SelectedLayout = typeof(AdminLayout);
+            else if (user.IsInRole("Seller"))
+                SelectedLayout = typeof(SellerLayout);
+        }
+    }
+}
+
+<LayoutView Layout="SelectedLayout">
+    @Body
+</LayoutView>

@@ -1,46 +1,69 @@
 ﻿@inherits LayoutComponentBase
+@inject NavigationManager Navigation
+@inject HttpClient Http
+@inject ILocalStorageService LocalStorage
+@inject CustomAuthStateProvider AuthStateProvider
 
 <div class="d-flex admin-container" style="min-height:100vh;">
 
     <!-- Sidebar -->
-    <div class="sidebar bg-dark text-white p-3" style="width:250px;">
-        <h5 class="mb-4">Admin Panel</h5>
+    <nav class="sidebar bg-dark text-white p-3 d-flex flex-column" style="width:250px;">
+        <h5 class="mb-4 text-center">Admin Panel</h5>
         <NavMenuAdmin />
-    </div>
+    </nav>
 
-    <!-- Main Content -->
+    <!-- Main Content Wrapper -->
     <div class="flex-grow-1 d-flex flex-column">
 
         <!-- Top Navbar -->
-        <nav class="navbar navbar-light bg-white shadow-sm px-3">
-            <span class="navbar-brand mb-0 h6">@Title</span>
+        <nav class="navbar navbar-expand bg-white shadow-sm px-3">
+            <span class="navbar-brand mb-0 fw-semibold">@Title</span>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNavMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="topNavMenu">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle fs-5 me-2"></i> Admin
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                            <li><a class="dropdown-item" href="/admin/profile"><i class="bi bi-gear me-2"></i> Settings</a></li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li>
+                                <button class="dropdown-item text-danger" @onclick="Logout">
+                                    <i class="bi bi-box-arrow-right me-2"></i> Logout
+                                </button>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </nav>
 
         <!-- Body -->
-        <main class="p-3 bg-light" style="flex-grow:1;">
+        <main class="p-4 bg-light flex-grow-1">
             @Body
         </main>
 
     </div>
-
 </div>
 
 @code {
     [Parameter] public string Title { get; set; } = "Dashboard";
-}
-@* @inject ILocalStorageService LocalStorage
-@inject CustomAuthStateProvider AuthStateProvider
-@inject NavigationManager Navigation
-@inject HttpClient Http
 
-<button class="btn btn-danger" @onclick="Logout">Logout</button>
-
-@code {
     private async Task Logout()
     {
-        await Http.PostAsync("api/auth/logout", null);
+        try
+        {
+            await Http.PostAsync("auth/logout", null);
+        }
+        catch { }
+
         await LocalStorage.RemoveItemAsync("authToken");
         AuthStateProvider.NotifyUserLogout();
-        Navigation.NavigateTo("/login");
+        Navigation.NavigateTo("/login", true);
     }
-} *@
+}
