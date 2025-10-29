@@ -12,14 +12,6 @@ namespace Ecommerce.Client.Services
             _http = http;
         }
 
-        // Get all categories
-        //public async Task<List<CategoryDto>> AllCategory()
-        //{
-        //    var categories = await _http.GetFromJsonAsync<List<CategoryDto>>("Category/allcategories");
-        //    return categories ?? new List<CategoryDto>();
-        //}
-
-
         public async Task<List<CategoryDto>> AllCategory()
         {
             try

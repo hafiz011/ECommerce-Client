@@ -1,117 +1,107 @@
 ﻿@page "/admin/categories"
-@* @using Microsoft.AspNetCore.Authorization
 @attribute [Authorize(Roles = "Admin")]
-@layout AdminLayout *@
+@layout AdminLayout
 @using Ecommerce.Client.Models
 @using Ecommerce.Client.Services
 @inject CategoryService CategoryService
 @inject IJSRuntime JsRuntime
+@inject ToastService ToastService
+
 <section class="container-fluid py-5">
-<h3>Category Management</h3>
+    <h3>Category Management</h3>
 
-<div class="mb-3 text-end">
-    <button class="btn btn-success" @onclick="ShowAddForm">Add New Category</button>
-</div>
-
-@if (isLoading)
-{
-    <div class="text-center my-5">
-        <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
+    <div class="mb-3 text-end">
+        <button class="btn btn-success" @onclick="ShowAddForm">Add New Category</button>
     </div>
-}
-else
-{
-    <table class="table table-bordered table-striped table-hover">
-        <thead class="table-dark">
-            <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Image</th>
-                <th class="text-center">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var cat in categories)
-            {
+
+    @if (isLoading)
+    {
+        <div class="text-center my-5">
+            <div class="spinner-border text-primary" role="status"></div>
+        </div>
+    }
+    else
+    {
+        <table class="table table-bordered table-striped table-hover">
+            <thead class="table-dark">
                 <tr>
-                    <td>@cat.Name</td>
-                    <td>@cat.Description</td>
-                    <td>
-                        @if (!string.IsNullOrEmpty(cat.ImagePath))
-                        {
-                            <img src="@cat.ImagePath" class="img-thumbnail" style="width:80px;height:80px;object-fit:cover;" />
-                        }
-                    </td>
-                    <td class="text-center">
-                        <button class="btn btn-primary btn-sm me-2" @onclick="() => ShowEditForm(cat)">Edit</button>
-                        <button class="btn btn-danger btn-sm" @onclick="() => DeleteCategory(cat.Id)">Delete</button>
-                    </td>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Image</th>
+                    <th class="text-center">Actions</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
-
-<!-- Add/Edit Modal -->
-@if (showForm)
-{
-    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">@((isEditMode) ? "Edit Category" : "Add Category")</h5>
-                    <button type="button" class="btn-close" @onclick="HideForm"></button>
-                </div>
-                <div class="modal-body">
-                    <EditForm Model="@currentCategory" OnValidSubmit="HandleSubmit">
-                        <DataAnnotationsValidator />
-                        <ValidationSummary />
-
-                        <div class="mb-3">
-                            <label>Name</label>
-                            <InputText class="form-control" @bind-Value="currentCategory.Name" />
-                        </div>
-
-                        <div class="mb-3">
-                            <label>Description</label>
-                            <InputTextArea class="form-control" @bind-Value="currentCategory.Description" />
-                        </div>
-
-                        <div class="mb-3">
-                            <label>Upload Image</label><br />
-                            <InputFile OnChange="HandleImageChange" />
-                            @if (!string.IsNullOrEmpty(previewImageUrl))
+            </thead>
+            <tbody>
+                @foreach (var cat in categories)
+                {
+                    <tr>
+                        <td>@cat.Name</td>
+                        <td>@cat.Description</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(cat.ImagePath))
                             {
-                                <img src="@previewImageUrl" class="img-thumbnail mt-2" style="width:100px;height:100px;object-fit:cover;" />
+                                <img src="@cat.ImagePath" class="img-thumbnail" style="width:80px;height:80px;object-fit:cover;" />
                             }
-                        </div>
+                        </td>
+                        <td class="text-center">
+                            <button class="btn btn-primary btn-sm me-2" @onclick="() => ShowEditForm(cat)">Edit</button>
+                            <button class="btn btn-danger btn-sm" @onclick="() => DeleteCategory(cat.Id)">Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 
-                        <div class="text-end">
-                            <button type="submit" class="btn btn-primary">@((isEditMode) ? "Update" : "Save")</button>
-                            <button type="button" class="btn btn-secondary ms-2" @onclick="HideForm">Cancel</button>
-                        </div>
-                    </EditForm>
+    @if (showForm)
+    {
+        <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">@((isEditMode) ? "Edit Category" : "Add Category")</h5>
+                        <button type="button" class="btn-close" @onclick="HideForm"></button>
+                    </div>
+                    <div class="modal-body">
+                        <EditForm Model="@currentCategory" OnValidSubmit="HandleSubmit">
+                            <DataAnnotationsValidator />
+                            <ValidationSummary />
+
+                            <div class="mb-3">
+                                <label>Name</label>
+                                <InputText class="form-control" @bind-Value="currentCategory.Name" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label>Description</label>
+                                <InputTextArea class="form-control" @bind-Value="currentCategory.Description" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label>Upload Image</label><br />
+                                <InputFile OnChange="HandleImageChange" />
+                                @if (!string.IsNullOrEmpty(previewImageUrl))
+                                {
+                                    <img src="@previewImageUrl" class="img-thumbnail mt-2" style="width:100px;height:100px;object-fit:cover;" />
+                                }
+                            </div>
+
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-primary" disabled="@isProcessing">
+                                    @if (isProcessing)
+                                    {
+                                        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                    }
+                                    @((isEditMode) ? "Update" : "Save")
+                                </button>
+                                <button type="button" class="btn btn-secondary ms-2" @onclick="HideForm">Cancel</button>
+                            </div>
+                        </EditForm>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-}
-
-<!-- Toast Notification -->
-@if (!string.IsNullOrEmpty(toastMessage))
-{
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        <div class="toast show align-items-center text-white bg-success border-0" role="alert">
-            <div class="d-flex">
-                <div class="toast-body">@toastMessage</div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" @onclick="() => toastMessage = null"></button>
-            </div>
-        </div>
-    </div>
-}
-
+    }
 </section>
 
 @code {
@@ -119,15 +109,12 @@ else
     private bool isLoading = true;
     private bool showForm = false;
     private bool isEditMode = false;
+    private bool isProcessing = false;
 
     private CategoryDto currentCategory = new();
     private string? previewImageUrl;
-    private string? toastMessage;
 
-    protected override async Task OnInitializedAsync()
-    {
-        await LoadCategories();
-    }
+    protected override async Task OnInitializedAsync() => await LoadCategories();
 
     private async Task LoadCategories()
     {
@@ -173,22 +160,26 @@ else
         await file.OpenReadStream(5 * 1024 * 1024).CopyToAsync(ms);
         currentCategory.ImageData = ms.ToArray();
 
-        var format = "image/webp";
-        previewImageUrl = $"data:{format};base64,{Convert.ToBase64String(currentCategory.ImageData)}";
+        previewImageUrl = $"data:image/webp;base64,{Convert.ToBase64String(currentCategory.ImageData)}";
     }
 
     private async Task HandleSubmit()
     {
+        if (isProcessing) return;
+        isProcessing = true;
+
         bool success;
         if (isEditMode)
         {
             success = await CategoryService.UpdateCategory(currentCategory.Id!, currentCategory);
-            toastMessage = success ? "Category updated successfully!" : "Failed to update category!";
+            if (success) ToastService.ShowSuccess("Category updated successfully!");
+            else ToastService.ShowError("Failed to update category!");
         }
         else
         {
             success = await CategoryService.AddCategory(currentCategory);
-            toastMessage = success ? "Category added successfully!" : "Failed to add category!";
+            if (success) ToastService.ShowSuccess("Category added successfully!");
+            else ToastService.ShowError("Failed to add category!");
         }
 
         if (success)
@@ -196,18 +187,19 @@ else
             await LoadCategories();
             HideForm();
         }
+
+        isProcessing = false;
     }
 
     private async Task DeleteCategory(string id)
     {
-        bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", $"Are you sure you want to delete this category?");
+        bool confirmed = await JsRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete this category?");
         if (!confirmed) return;
 
         var success = await CategoryService.DeleteCategory(id);
-        toastMessage = success ? "Category deleted successfully!" : "Failed to delete category!";
-        if (success)
-        {
-            await LoadCategories();
-        }
+        if (success) ToastService.ShowSuccess("Category deleted successfully!");
+        else ToastService.ShowError("Failed to delete category!");
+
+        if (success) await LoadCategories();
     }
 }

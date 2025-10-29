@@ -1,0 +1,62 @@
+﻿@inject ToastService ToastService
+
+@if (showToast)
+{
+    <div class="toast-container position-fixed top-0 end-0 p-3 animate__animated @animationClass">
+        <div class="toast show text-white @bgClass border-0 shadow-lg rounded-3" role="alert">
+            <div class="d-flex align-items-center px-3 py-2">
+                <i class="@iconClass fs-4 me-2"></i>
+                <div class="toast-body">@message</div>
+                <button type="button" class="btn-close btn-close-white ms-3"
+                        @onclick="Hide"></button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private bool showToast = false;
+    private string message = "";
+    private string bgClass = "bg-success";
+    private string iconClass = "bi bi-check-circle-fill";
+    private string animationClass = "animate__fadeInDown";
+
+    protected override void OnInitialized()
+    {
+        ToastService.OnShow += ShowToast;
+    }
+
+    private void ShowToast(string msg, ToastType type)
+    {
+        message = msg;
+        (bgClass, iconClass) = type switch
+        {
+            ToastType.Success => ("bg-success", "bi bi-check-circle-fill"),
+            ToastType.Error => ("bg-danger", "bi bi-x-circle-fill"),
+            ToastType.Warning => ("bg-warning text-dark", "bi bi-exclamation-triangle-fill"),
+            ToastType.Info => ("bg-info text-dark", "bi bi-info-circle-fill"),
+            _ => ("bg-secondary", "bi bi-chat-left-text")
+        };
+
+        animationClass = "animate__fadeInDown";
+        showToast = true;
+        StateHasChanged();
+        _ = AutoHide();
+    }
+
+    private async Task AutoHide()
+    {
+        await Task.Delay(5000);
+        animationClass = "animate__fadeOutUp";
+        StateHasChanged();
+        await Task.Delay(600);
+        showToast = false;
+        StateHasChanged();
+    }
+
+    public void Hide()
+    {
+        showToast = false;
+        StateHasChanged();
+    }
+}

@@ -14,11 +14,22 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 //});
 
 
+//builder.Services.AddScoped<AuthMessageHandler>();
+//builder.Services.AddHttpClient("ApiClient", client =>
+//{
+//    client.BaseAddress = new Uri(builder.Configuration["ApiBaseUrl"]);
+//}).AddHttpMessageHandler<AuthMessageHandler>();
+
 builder.Services.AddScoped<AuthMessageHandler>();
+
 builder.Services.AddHttpClient("ApiClient", client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["ApiBaseUrl"]);
-}).AddHttpMessageHandler<AuthMessageHandler>();
+})
+.AddHttpMessageHandler<AuthMessageHandler>();
+
+builder.Services.AddScoped(sp =>
+    sp.GetRequiredService<IHttpClientFactory>().CreateClient("ApiClient"));
 
 
 
@@ -34,6 +45,9 @@ builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<CategoryService>();
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<CartService>();
+
+builder.Services.AddScoped<ToastService>();
+
 
 
 await builder.Build().RunAsync();
