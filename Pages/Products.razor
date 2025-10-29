@@ -1,5 +1,4 @@
 ﻿@page "/products"
-@using Ecommerce.Client.Models
 @inject ProductService ProductService
 @inject NavigationManager Navigation
 
@@ -168,4 +167,21 @@
         activeFilters = new FilterParams();
         await LoadPage(1);
     }
+
+
+//     @inject CategoryStateService CategoryStateService
+
+// protected override async Task OnInitializedAsync()
+// {
+//     if (!string.IsNullOrEmpty(CategoryStateService.SelectedCategoryId))
+//     {
+//         activeFilters.CategoryId = CategoryStateService.SelectedCategoryId;
+//         pageTitle = "Category Products";
+//     }
+
+//     await LoadPage(1);
+
+//     CategoryStateService.SelectedCategoryId = null;
+// }
+
 }

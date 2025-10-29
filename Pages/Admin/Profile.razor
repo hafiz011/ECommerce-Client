@@ -1,8 +1,11 @@
 ﻿@page "/admin/profile"
 @layout AdminLayout
 @attribute [Authorize(Roles = "Admin")]
-
 @inject HttpClient Http
+@inject ToastService ToastService
+@inject IJSRuntime JsRuntime
+
+
 
 <h4 class="mb-4">Account Settings</h4>
 
@@ -90,20 +93,14 @@ else
                     <button type="submit" class="btn btn-primary" disabled="@isSaving">
                         @if (isSaving)
                         {
-                            <span class="spinner-border spinner-border-sm me-2"> Saving...</span>
-                           
+                            <span class="spinner-border spinner-border-sm me-2">Saving...</span>
+                            @* <p>Saving...</p> *@
                         }
                         else
                         {
-
                             <span>Save Changes</span>
                         }
                     </button>
-
-                    @if (!string.IsNullOrEmpty(message))
-                    {
-                        <div class="alert alert-info mt-3">@message</div>
-                    }
 
                 </div>
             </div>
@@ -111,8 +108,6 @@ else
         </div>
     </EditForm>
 }
-
-
 
 <!-- Change Password Modal -->
 <div class="modal fade" id="changePasswordModal" tabindex="-1">
@@ -139,83 +134,120 @@ else
                 </div>
 
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button class="btn btn-primary" type="submit">Update Password</button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal" disabled="@isChangingPassword">Cancel</button>
+                    <button class="btn btn-primary" type="submit" disabled="@isChangingPassword">
+                        @if (isChangingPassword)
+                        {
+                            <span class="spinner-border spinner-border-sm me-2">Updating...</span>
+                            
+                                                }
+                        else
+                        {
+                            <span>Update Password</span>
+                        }
+                    </button>
                 </div>
-
-                @if (!string.IsNullOrEmpty(passwordMessage))
-                {
-                    <div class="alert alert-info mt-2 mb-0">@passwordMessage</div>
-                }
 
             </EditForm>
         </div>
     </div>
 </div>
 
-
 @code {
     private UpdateAccountModel model = new();
     private ChangePasswordModel passwordModel = new();
     private bool isSaving = false;
+    private bool isChangingPassword = false;
     private bool isLoading = true;
-    private string message;
-    private string passwordMessage;
     private string email = "";
 
-    protected override async Task OnInitializedAsync()
-    {
-        await LoadProfile();
-    }
+    protected override async Task OnInitializedAsync() => await LoadProfile();
 
     private async Task LoadProfile()
     {
         try
         {
-            // var client = HttpClientFactory.CreateClient("ApiClient");
             var response = await Http.GetAsync("auth/account");
             if (response.IsSuccessStatusCode)
             {
                 var data = await response.Content.ReadFromJsonAsync<ProfileResponse>();
-                email = data.Email;
-                model.FirstName = data.FirstName;
-                model.LastName = data.LastName;
-                model.Phone = data.PhoneNumber;
-
-                model.Address = data.Address ?? new Address();
+                if (data != null)
+                {
+                    email = data.Email;
+                    model.FirstName = data.FirstName;
+                    model.LastName = data.LastName;
+                    model.Phone = data.PhoneNumber;
+                    model.Address = data.Address ?? new Address();
+                }
             }
         }
         catch (Exception ex)
         {
-            message = "Failed to load profile: " + ex.Message;
+            ToastService.ShowError($"Failed to load profile: {ex.Message}");
         }
-        isLoading = false;
+        finally
+        {
+            isLoading = false;
+        }
     }
 
     private async Task SaveProfile()
     {
+        if (isSaving) return;
         isSaving = true;
-        var response = await Http.PutAsJsonAsync("auth/account", model);
-        var result = await response.Content.ReadFromJsonAsync<ApiMessage>();
-        message = result?.Message;
-        isSaving = false;
+
+        try
+        {
+            var response = await Http.PutAsJsonAsync("auth/account", model);
+            if (response.IsSuccessStatusCode)
+            {
+                ToastService.ShowSuccess("Profile updated successfully!");
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                ToastService.ShowError($"Failed to update profile! {error}");
+            }
+        }
+        catch (Exception ex)
+        {
+            ToastService.ShowError($"An error occurred: {ex.Message}");
+        }
+        finally
+        {
+            isSaving = false;
+        }
     }
 
     private async Task ChangePassword()
     {
-        passwordMessage = "";
+        if (isChangingPassword) return;
+        isChangingPassword = true;
+
         try
         {
             var response = await Http.PostAsJsonAsync("auth/change-password", passwordModel);
-            var result = await response.Content.ReadFromJsonAsync<ApiMessage>();
-            passwordMessage = result?.Message;
+            if (response.IsSuccessStatusCode)
+            {
+                ToastService.ShowSuccess("Password changed successfully!");
+                passwordModel = new ChangePasswordModel(); // Reset form
+                await JsRuntime.InvokeVoidAsync("eval", "bootstrap.Modal.getInstance(document.querySelector('#changePasswordModal')).hide()");
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                ToastService.ShowError($"Failed to change password! {error}");
+            }
         }
         catch (Exception ex)
         {
-            passwordMessage = ex.Message;
+            ToastService.ShowError($"An error occurred: {ex.Message}");
+        }
+        finally
+        {
+            isChangingPassword = false;
         }
     }
-
 
     public class UpdateAccountModel
     {
@@ -227,11 +259,11 @@ else
 
     public class Address
     {
-        public string Street { get; set; }
-        public string City { get; set; }
-        public string State { get; set; }
-        public string Country { get; set; }
-        public string Zip { get; set; }
+        public string? Street { get; set; }
+        public string? City { get; set; }
+        public string? State { get; set; }
+        public string? Country { get; set; }
+        public string? Zip { get; set; }
     }
 
     public class ProfileResponse
@@ -247,10 +279,5 @@ else
     {
         public string currentPassword { get; set; }
         public string newPassword { get; set; }
-    }
-
-    public class ApiMessage
-    {
-        public string Message { get; set; }
     }
 }

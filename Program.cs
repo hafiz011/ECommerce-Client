@@ -47,6 +47,8 @@ builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<CartService>();
 
 builder.Services.AddScoped<ToastService>();
+builder.Services.AddSingleton<CategoryStateService>();
+
 
 
 

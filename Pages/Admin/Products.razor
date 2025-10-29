@@ -1,4 +1,7 @@
-﻿<h3>Products</h3>
+﻿@page "/admin/Products"
+@layout AdminLayout
+@attribute [Authorize(Roles = "Admin")]
+<h3>Products</h3>
 
 @code {
 
