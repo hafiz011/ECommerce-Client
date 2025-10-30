@@ -1,10 +1,14 @@
 ﻿@page "/products"
 @inject ProductService ProductService
 @inject NavigationManager Navigation
+@inject CategoryStateService CategoryStateService
+
 
 <div class="row gx-4">
     <div class="col-lg-3 d-none d-lg-block">
-        <Sidebar OnFiltersChanged="OnFiltersChanged" />
+        @* <Sidebar OnFiltersChanged="OnFiltersChanged" /> *@
+        <Sidebar SelectedCategoryId="@activeFilters.CategoryId" OnFiltersChanged="OnFiltersChanged" />
+
     </div>
 
     <div class="col-12 col-lg-9">
@@ -74,7 +78,11 @@
                 <button class="btn btn-sm btn-outline-secondary" @onclick="() => ShowMobileFilters = false">Close</button>
             </div>
 
-            <Sidebar OnFiltersChanged="OnFiltersChanged" />
+            @* <Sidebar OnFiltersChanged="OnFiltersChanged" /> *@
+           <div class="col-lg-3 d-none d-lg-block">
+            <Sidebar SelectedCategoryId="@activeFilters.CategoryId" OnFiltersChanged="OnFiltersChanged" />
+       
+            </div>
         </div>
     </div>
 }
@@ -108,6 +116,14 @@
 
     protected override async Task OnInitializedAsync()
     {
+         if (!string.IsNullOrEmpty(CategoryStateService.SelectedCategoryId))
+        {
+            activeFilters.CategoryId = CategoryStateService.SelectedCategoryId;
+            CategoryStateService.SelectedCategoryId = null; // clear
+            pageTitle = activeFilters.CategoryId != null ? "Filtered Products" : "Filtered Results";
+        }
+
+
         await LoadPage(1);
     }
 
@@ -168,20 +184,5 @@
         await LoadPage(1);
     }
 
-
-//     @inject CategoryStateService CategoryStateService
-
-// protected override async Task OnInitializedAsync()
-// {
-//     if (!string.IsNullOrEmpty(CategoryStateService.SelectedCategoryId))
-//     {
-//         activeFilters.CategoryId = CategoryStateService.SelectedCategoryId;
-//         pageTitle = "Category Products";
-//     }
-
-//     await LoadPage(1);
-
-//     CategoryStateService.SelectedCategoryId = null;
-// }
 
 }

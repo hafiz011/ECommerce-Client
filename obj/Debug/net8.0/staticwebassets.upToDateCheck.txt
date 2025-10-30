@@ -1,8 +1,8 @@
 wwwroot\css\app.css
-wwwroot\css\site.css
 wwwroot\icon-192.png
 wwwroot\index.html
 wwwroot\NewFolder\basketball-players-big-professional-arena-game.jpg
 wwwroot\NewFolder\robot-relaxing-laptop.jpg
 wwwroot\NewFolder\young-couple-cooking-home.jpg
+wwwroot\css\site.css
 wwwroot\appsettings.json

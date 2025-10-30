@@ -12,47 +12,6 @@ namespace Ecommerce.Client.Services
             _http = http;
         }
 
-        public async Task<List<ProductDto>> GetFeaturedProducts(int take = 12)
-        {
-            try
-            {
-                var res = await _http.GetFromJsonAsync<List<ProductDto>>($"Product/featured?take={take}");
-                return res ?? new List<ProductDto>();
-            }
-            catch
-            {
-                return new List<ProductDto>();
-            }
-        }
-
-        public async Task<ProductDto?> GetById(string id)
-        {
-            try
-            {
-                return await _http.GetFromJsonAsync<ProductDto>($"Product/{id}");
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        public async Task<List<ProductDto>> GetProductsByCategory(string categoryId)
-        {
-            var products = await _http.GetFromJsonAsync<List<ProductDto>>(
-                $"Product/bycategory/{categoryId}");
-
-            return products ?? new List<ProductDto>();
-        }
-
-
-
-
-
-
-
-
-
         public async Task<PagedResult<ProductDto>> GetProductsPaged(int page = 1, int pageSize = 20)
         {
             try
@@ -72,8 +31,8 @@ namespace Ecommerce.Client.Services
             {
                 var qs = new List<string>();
                 if (!string.IsNullOrWhiteSpace(filters.CategoryId)) qs.Add($"category={Uri.EscapeDataString(filters.CategoryId)}");
-                if (filters.MinPrice.HasValue) qs.Add($"priceMin={filters.MinPrice.Value}");
-                if (filters.MaxPrice.HasValue) qs.Add($"priceMax={filters.MaxPrice.Value}");
+                if (filters.MinPrice.HasValue) qs.Add($"minPrice={filters.MinPrice.Value}");
+                if (filters.MaxPrice.HasValue) qs.Add($"maxPrice={filters.MaxPrice.Value}");
                 if (!string.IsNullOrWhiteSpace(filters.Search)) qs.Add($"q={Uri.EscapeDataString(filters.Search)}");
 
                 qs.Add($"page={page}");
@@ -98,27 +57,85 @@ namespace Ecommerce.Client.Services
 
 
 
-        public async Task<ProductDto?> GetByIdAsync(string id)
-        {
-            return await _http.GetFromJsonAsync<ProductDto>($"Product/{id}");
-        }
 
-        public async Task<bool> CreateAsync(ProductDto product)
-        {
-            var response = await _http.PostAsJsonAsync("Product", product);
-            return response.IsSuccessStatusCode;
-        }
 
-        public async Task<bool> UpdateAsync(string id, ProductDto product)
-        {
-            var response = await _http.PutAsJsonAsync($"Product/{id}", product);
-            return response.IsSuccessStatusCode;
-        }
 
-        public async Task<bool> DeleteAsync(string id)
-        {
-            var response = await _http.DeleteAsync($"Product/{id}");
-            return response.IsSuccessStatusCode;
-        }
+
+
+
+
+        //public async Task<List<ProductDto>> GetFeaturedProducts(int take = 12)
+        //{
+        //    try
+        //    {
+        //        var res = await _http.GetFromJsonAsync<List<ProductDto>>($"Product/featured?take={take}");
+        //        return res ?? new List<ProductDto>();
+        //    }
+        //    catch
+        //    {
+        //        return new List<ProductDto>();
+        //    }
+        //}
+
+        //public async Task<ProductDto?> GetById(string id)
+        //{
+        //    try
+        //    {
+        //        return await _http.GetFromJsonAsync<ProductDto>($"Product/{id}");
+        //    }
+        //    catch
+        //    {
+        //        return null;
+        //    }
+        //}
+
+        //public async Task<List<ProductDto>> GetProductsByCategory(string categoryId)
+        //{
+        //    var products = await _http.GetFromJsonAsync<List<ProductDto>>(
+        //        $"Product/bycategory/{categoryId}");
+
+        //    return products ?? new List<ProductDto>();
+        //}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //public async Task<ProductDto?> GetByIdAsync(string id)
+        //{
+        //    return await _http.GetFromJsonAsync<ProductDto>($"Product/{id}");
+        //}
+
+        //public async Task<bool> CreateAsync(ProductDto product)
+        //{
+        //    var response = await _http.PostAsJsonAsync("Product", product);
+        //    return response.IsSuccessStatusCode;
+        //}
+
+        //public async Task<bool> UpdateAsync(string id, ProductDto product)
+        //{
+        //    var response = await _http.PutAsJsonAsync($"Product/{id}", product);
+        //    return response.IsSuccessStatusCode;
+        //}
+
+        //public async Task<bool> DeleteAsync(string id)
+        //{
+        //    var response = await _http.DeleteAsync($"Product/{id}");
+        //    return response.IsSuccessStatusCode;
+        //}
     }
 }

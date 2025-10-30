@@ -51,6 +51,5 @@ builder.Services.AddSingleton<CategoryStateService>();
 
 
 
-
 await builder.Build().RunAsync();
 

@@ -1,5 +1,4 @@
-﻿@using Ecommerce.Client.Models
-@inject CategoryService CategoryService
+﻿@inject CategoryService CategoryService
 
 <div class="sidebar card border-0 shadow-sm">
     <div class="card-body p-3">
@@ -46,8 +45,8 @@
     [Parameter] public string? SelectedCategoryId { get; set; }
 
     private List<CategoryDto> categories = new();
-    private decimal? PriceMin;
-    private decimal? PriceMax;
+    private decimal? MinPrice;
+    private decimal? MaxPrice;
     private string priceMinString = "";
     private string priceMaxString = "";
 
@@ -65,8 +64,8 @@
     private async Task ApplyFilters()
     {
         // parse price strings robustly
-        PriceMin = decimal.TryParse(priceMinString, out var pmin) ? pmin : null;
-        PriceMax = decimal.TryParse(priceMaxString, out var pmax) ? pmax : null;
+        MinPrice = decimal.TryParse(priceMinString, out var pmin) ? pmin : null;
+        MaxPrice = decimal.TryParse(priceMaxString, out var pmax) ? pmax : null;
 
         await EmitFilters();
     }
@@ -74,8 +73,8 @@
     private async Task ResetFilters()
     {
         SelectedCategoryId = null;
-        PriceMin = null;
-        PriceMax = null;
+        MinPrice = null;
+        MaxPrice = null;
         priceMinString = priceMaxString = "";
 
         await EmitFilters();
@@ -86,8 +85,8 @@
         var f = new FilterParams
         {
             CategoryId = SelectedCategoryId,
-            MinPrice = PriceMin,
-            MaxPrice = PriceMax
+            MinPrice = MinPrice,
+            MaxPrice = MaxPrice
         };
 
         if (OnFiltersChanged.HasDelegate)

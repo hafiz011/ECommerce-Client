@@ -3,6 +3,9 @@
 @inject CategoryService CategoryService
 @inject ProductService ProductService
 @inject NavigationManager Navigation
+@inject CategoryStateService CategoryStateService
+@inject IJSRuntime JSRuntime
+
 
 
 <PageTitle>ShopBD - Best Deals Everyday</PageTitle>
@@ -31,16 +34,6 @@
         <div class="row g-0 justify-content-center category-grid">
             @foreach (var c in categories)
             {
-                @* <div class="col-4 col-md-2 d-flex justify-content-center">
-                    <a href="/products" class="text-decoration-none w-100">
-                        <div class="category-box text-center bg-white hover-card">
-                            <img src="@c.ImagePath" alt="@c.Name" class="category-img mb-1" />
-                            <p class="fw-semibold text-dark small m-0">@c.Name</p>
-                        </div>
-                    </a>
-                </div> *@
-
-
                 <div class="col-4 col-md-2 d-flex justify-content-center">
                     <div @onclick="() => GoToCategory(c.Id)" class="category-box text-center bg-white hover-card">
                         <img src="@c.ImagePath" alt="@c.Name" class="category-img mb-1" />
@@ -62,21 +55,48 @@
     @if (loading)
     {
         <div class="text-center py-5">
-            <div class="spinner-border text-primary"></div>
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
         </div>
+    }
+    else if (pagedResult == null || pagedResult.Items.Count == 0)
+    {
+        <div class="text-center text-muted py-5">No products found for selected filters.</div>
     }
     else
     {
         <div class="row g-3">
-            @foreach (var p in products)
+            @foreach (var p in pagedResult.Items)
             {
                 <div class="col-6 col-md-4 col-lg-3">
                     <ProductCard Product="@p" />
                 </div>
             }
         </div>
+
+        <!-- Pagination controls -->
+        <nav class="mt-4">
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(CurrentPage == 1 ? "disabled" : "")">
+                    <button class="page-link" @onclick="() => ChangePage(CurrentPage - 1)">Previous</button>
+                </li>
+
+                @foreach (var pg in GetPageRange())
+                {
+                    <li class="page-item @(pg == CurrentPage ? "active" : "")">
+                        <button class="page-link" @onclick="() => ChangePage(pg)">@pg</button>
+                    </li>
+                }
+
+                <li class="page-item @(CurrentPage == pagedResult.TotalPages ? "disabled" : "")">
+                    <button class="page-link" @onclick="() => ChangePage(CurrentPage + 1)">Next</button>
+                </li>
+            </ul>
+        </nav>
     }
 </section>
+
 
 <!-- Newsletter -->
 <section class="newsletter-section bg-dark text-white py-5 rounded-3">
@@ -92,13 +112,48 @@
 
 @code {
     private List<CategoryDto> categories = new();
-    private List<ProductDto> products = new();
+    private PagedResult<ProductDto>? pagedResult;
     private bool loading = true;
+
+
+    private int CurrentPage = 1;
+    private int PageSize = 12; // adjust as needed
+
+    private async Task ChangePage(int page)
+    {
+        if (page < 1 || pagedResult == null || page > pagedResult.TotalPages)
+            return;
+
+        CurrentPage = page;
+        loading = true;
+        pagedResult = await ProductService.GetProductsPaged(CurrentPage, PageSize);
+        loading = false;
+
+        // Scroll to top of products section
+        await JSRuntime.InvokeVoidAsync("window.scrollTo", 0, 300); 
+    }
+
+    // Generate page range for pagination buttons
+    private IEnumerable<int> GetPageRange(int maxPages = 5)
+    {
+        if (pagedResult == null) yield break;
+
+        int total = pagedResult.TotalPages;
+        int start = Math.Max(Math.Min(CurrentPage - maxPages / 2, total - maxPages + 1), 1);
+        int end = Math.Min(start + maxPages - 1, total);
+
+        for (int i = start; i <= end; i++)
+            yield return i;
+    }
+
+
+
+
 
     protected override async Task OnInitializedAsync()
     {
         categories = await CategoryService.AllCategory();
-        products = await ProductService.GetFeaturedProducts();
+        pagedResult = await ProductService.GetProductsPaged();
         loading = false;
     }
 
